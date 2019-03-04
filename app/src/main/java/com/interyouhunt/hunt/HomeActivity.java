@@ -23,6 +23,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,7 +55,7 @@ public class HomeActivity extends AppCompatActivity {
 
         getInterviews(uid, new GetInterviewsCallback() {
             @Override
-            public void onCallback(List<Map<String, Object>> data) {
+            public void onCallback(final List<Map<String, Object>> data) {
                 List<String> interviews = new ArrayList<>();
                 for (Map<String, Object> interview: data) {
                     String str = interview.get("companyName") + ", " + interview.get("position");
@@ -64,8 +65,6 @@ public class HomeActivity extends AppCompatActivity {
 
                 // Defined Array values to show in ListView
 
-                // Get ListView object from xml
-                listView = (ListView) findViewById(R.id.list);
                 // Get ListView object from xml
                 listView = (ListView) findViewById(R.id.list);
 
@@ -90,7 +89,11 @@ public class HomeActivity extends AppCompatActivity {
                     public void onItemClick(AdapterView<?> parent, View view,
                                             int position, long id) {
 
-                        startActivity(new Intent(HomeActivity.this, InterviewActivity.class));
+                        Map<String,Object> map = data.get(position);
+                        Intent intent = new Intent(HomeActivity.this, InterviewActivity.class);
+                        intent.putExtra("interviewMap", (HashMap<String, Object>) map);
+                        startActivity(intent);
+
                     }
 
                 });

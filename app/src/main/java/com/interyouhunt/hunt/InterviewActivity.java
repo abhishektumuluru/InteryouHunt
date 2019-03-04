@@ -19,6 +19,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,19 +39,24 @@ public class InterviewActivity extends AppCompatActivity {
         if (user != null) {
             uid = user.getUid();
         }
+
+        Intent intent = getIntent();
+        final HashMap<String,Object> map = (HashMap<String, Object>)intent.getSerializableExtra("interviewMap") ;
+
         getInterviews(uid, new HomeActivity.GetInterviewsCallback() {
             @Override
             public void onCallback(List<Map<String, Object>> data) {
+
                 TextView company = findViewById(R.id.company);
-                String userCompany = data.get(0).get("companyName").toString();
+                String userCompany = map.get("companyName").toString();
                 company.setText(userCompany);
 
                 TextView positionType = findViewById(R.id.positionType);
-                String userPositionType = data.get(0).get("position").toString();
+                String userPositionType = map.get("position").toString();
                 positionType.setText(userPositionType);
 
                 TextView date = findViewById(R.id.dateTime);
-                String userDate = data.get(0).get("date").toString();
+                String userDate = map.get("date").toString();
                 date.setText(userDate);
 
                 TextView location = findViewById(R.id.userLocation);
