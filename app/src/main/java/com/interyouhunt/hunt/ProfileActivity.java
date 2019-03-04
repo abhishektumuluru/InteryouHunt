@@ -9,24 +9,36 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 public class ProfileActivity extends AppCompatActivity {
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseAuth mAuth;
+    private static final String TAG = "ProfileActivity";
+    String uid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null) {
+            uid = user.getUid();
+        }
 
         TextView name = findViewById(R.id.name);
-        String userName = "Faisal";
-        userName += " " + "Gedi";
+        String userName = user.getDisplayName();
         name.setText(userName);
 
         TextView email = findViewById(R.id.userEmail);
-        String userEmail = "faisalgedi@gmail.com";
+        String userEmail = user.getEmail();
         email.setText(userEmail);
 
         TextView phone = findViewById(R.id.userPhone);
-        String userPhone = "678-974-9193";
+        String userPhone = user.getPhoneNumber();
         phone.setText(userPhone);
 
         Button home = findViewById(R.id.toHome);
@@ -43,7 +55,7 @@ public class ProfileActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(ProfileActivity.this, HomeActivity.class));
+                startActivity(new Intent(ProfileActivity.this, ToDoActivity.class));
             }
         });
 

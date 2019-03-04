@@ -60,27 +60,27 @@ public class InterviewActivity extends AppCompatActivity {
                 date.setText(userDate);
 
                 TextView location = findViewById(R.id.userLocation);
-                String userLocation = data.get(0).get("location").toString();
+                String userLocation = map.get("location").toString();
                 location.setText(userLocation);
 
                 TextView roundType = findViewById(R.id.roundType);
-                String userRound = data.get(0).get("interviewType").toString();
+                String userRound = map.get("interviewType").toString();
                 roundType.setText(userRound);
 
                 TextView interviewType = findViewById(R.id.interviewType);
-                String userInterview = data.get(0).get("interviewStage").toString();
+                String userInterview = map.get("interviewStage").toString();
                 interviewType.setText(userInterview);
 
                 TextView recruiterName = findViewById(R.id.recruiter);
-                String userRecruitName  = data.get(0).get("recruiterName").toString();
+                String userRecruitName  = map.get("recruiterName").toString();
                 recruiterName.setText(userRecruitName);
 
                 TextView recruiterEmail = findViewById(R.id.recruiterEmail);
-                String userRecruitEmail  = data.get(0).get("recruiterEmail").toString();
+                String userRecruitEmail  = map.get("recruiterEmail").toString();
                 recruiterEmail.setText(userRecruitEmail);
 
                 TextView notes = findViewById(R.id.notesText);
-                String userNotes  = data.get(0).get("notes").toString();
+                String userNotes  = map.get("notes").toString();
                 notes.setText(userNotes);
             }
         });
@@ -100,7 +100,7 @@ public class InterviewActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(InterviewActivity.this, HomeActivity.class));
+                startActivity(new Intent(InterviewActivity.this, ToDoActivity.class));
             }
         });
 
