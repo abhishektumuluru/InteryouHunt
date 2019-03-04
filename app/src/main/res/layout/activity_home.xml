@@ -13,4 +13,37 @@
         android:layout_width="match_parent">
     </ListView>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="418dp"
+        android:layout_marginBottom="8dp"
+        android:layout_weight="1"
+        android:gravity="center|bottom"
+        android:orientation="horizontal"
+        android:paddingTop="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/list">
+
+        <Button
+            android:id="@+id/toHome"
+            android:layout_width="135dp"
+            android:layout_height="36dp"
+            android:gravity="center"
+            android:text="HOME" />
+
+        <Button
+            android:id="@+id/toDo"
+            android:layout_width="135dp"
+            android:layout_height="36dp"
+            android:gravity="center"
+            android:text="TO-DO" />
+
+        <Button
+            android:id="@+id/toProfile"
+            android:layout_width="135dp"
+            android:layout_height="36dp"
+            android:gravity="center"
+            android:text="PROFILE" />
+
+    </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>
