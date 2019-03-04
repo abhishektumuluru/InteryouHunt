@@ -1,5 +1,6 @@
 package com.interyouhunt.hunt;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText passwordField;
     private Button loginButton;
     private FirebaseAuth mAuth;
+    private ProgressDialog mProgressDialog;
 
     private Button registrationButton;
 
@@ -31,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        mProgressDialog = new ProgressDialog(this);
         emailField = findViewById(R.id.input_email);
         passwordField = findViewById(R.id.input_password);
         loginButton = findViewById(R.id.btn_login);
@@ -61,7 +64,8 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(LoginActivity.this, "Please enter your username and password.", Toast.LENGTH_LONG).show();
             return;
         }
-
+        mProgressDialog.setMessage("Logging in...");
+        mProgressDialog.show();
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
