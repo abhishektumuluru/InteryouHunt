@@ -9,9 +9,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="56dp"
-        android:paddingLeft="24dp"
-        android:paddingRight="24dp">
+        android:paddingTop="56dp">
 
 
         <LinearLayout
@@ -114,6 +112,37 @@
                 android:layout_width="210dp"
                 android:layout_height="115dp"
                 android:text="these are the notes" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="280dp"
+            android:layout_weight="1"
+            android:gravity="center|bottom"
+            android:orientation="horizontal"
+            android:paddingTop="10dp">
+
+            <Button
+                android:id="@+id/toHome"
+                android:layout_width="135dp"
+                android:layout_height="36dp"
+                android:gravity="center"
+                android:text="HOME" />
+
+            <Button
+                android:id="@+id/toDo"
+                android:layout_width="135dp"
+                android:layout_height="36dp"
+                android:gravity="center"
+                android:text="TO-DO" />
+
+            <Button
+                android:id="@+id/toProfile"
+                android:layout_width="135dp"
+                android:layout_height="36dp"
+                android:gravity="center"
+                android:text="PROFILE" />
+
         </LinearLayout>
 
     </LinearLayout>
