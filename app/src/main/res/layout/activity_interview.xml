@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fitsSystemWindows="true">
 
     <LinearLayout
@@ -42,7 +43,7 @@
             android:paddingRight="24dp">
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/company"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -59,14 +60,15 @@
             android:paddingRight="24dp">
 
             <TextView
-                android:id="@+id/textView2"
-                android:layout_width="90dp"
+                android:id="@+id/round"
+                android:layout_width="89dp"
                 android:layout_height="wrap_content"
                 android:text="Round Type:" />
 
             <TextView
-                android:id="@+id/textView6"
-                android:layout_width="152dp"
+                android:id="@+id/roundType"
+                android:paddingLeft="14dp"
+                android:layout_width="214dp"
                 android:layout_height="wrap_content"
                 android:text="interview's round type" />
 
@@ -81,15 +83,15 @@
             android:paddingRight="24dp">
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/email"
                 android:layout_width="104dp"
                 android:layout_height="21dp"
                 android:text="Recruiter:" />
 
             <TextView
-                android:id="@+id/textView7"
-                android:layout_width="104dp"
-                android:layout_height="21dp"
+                android:id="@+id/recruiterEmail"
+                android:layout_width="204dp"
+                android:layout_height="wrap_content"
                 android:text="recruiter's email" />
         </LinearLayout>
 
@@ -102,13 +104,13 @@
             android:paddingRight="24dp">
 
             <TextView
-                android:id="@+id/textView8"
+                android:id="@+id/notes"
                 android:layout_width="104dp"
                 android:layout_height="21dp"
                 android:text="Notes:" />
 
             <TextView
-                android:id="@+id/textView9"
+                android:id="@+id/notesText"
                 android:layout_width="210dp"
                 android:layout_height="115dp"
                 android:text="these are the notes" />
