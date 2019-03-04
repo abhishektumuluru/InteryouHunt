@@ -17,6 +17,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
@@ -24,6 +26,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -32,6 +39,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private EditText password;
     private EditText name;
     private Button createAccountButton;
+    FirebaseFirestore db;
     private ProgressDialog mProgressDialog;
 
     @Override
@@ -44,6 +52,7 @@ public class RegistrationActivity extends AppCompatActivity {
         name = findViewById(R.id.signup_name_edittext);
         password = findViewById(R.id.signup_password_edittext);
 
+        db = FirebaseFirestore.getInstance();
 
         createAccountButton = findViewById(R.id.btn_register);
         mProgressDialog = new ProgressDialog(this);
@@ -90,6 +99,7 @@ public class RegistrationActivity extends AppCompatActivity {
                             UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder().setDisplayName(nameString).build();
                             if (user != null) {
                                 user.updateProfile(profileUpdate);
+                                addUidToFirestore(user);
                             }
                             Intent loginActivity = new Intent(RegistrationActivity.this, LoginActivity.class);
                             RegistrationActivity.this.startActivity(loginActivity);
@@ -102,6 +112,24 @@ public class RegistrationActivity extends AppCompatActivity {
 
                         }
 
+                    }
+                });
+    }
+
+    protected void addUidToFirestore(FirebaseUser user) {
+        String uid = user.getUid();
+        final String TAG = "RegistrationActivity";
+        Map<String, Object> uidMap = new HashMap<>();
+        db.collection("users").document(uid).set(uidMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, "DocumentSnapshot successfully written!");
+            }
+        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error writing document", e);
                     }
                 });
     }

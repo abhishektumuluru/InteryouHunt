@@ -105,7 +105,7 @@ public class ToDoActivity extends AppCompatActivity {
         });
 
     }
-    
+
     private void getSortedInterviews(String uid, final HomeActivity.GetInterviewsCallback callback) {
         final List<Map<String, Object>> interviews = new ArrayList<>();
         DocumentReference userDoc = db.collection("users").document(uid);

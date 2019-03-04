@@ -1,12 +1,15 @@
 package com.interyouhunt.hunt;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -30,12 +33,20 @@ public class HomeActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     private static final String TAG = "HomeActivity";
     String uid;
+    FloatingActionButton plusButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         mAuth = FirebaseAuth.getInstance();
+        plusButton = findViewById(R.id.btn_plus);
+        plusButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HomeActivity.this.startActivity(new Intent(HomeActivity.this, AddCompanyActivity.class));
+            }
+        });
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
             uid = user.getUid();
@@ -71,6 +82,7 @@ public class HomeActivity extends AppCompatActivity {
                 // Assign adapter to ListView
                 listView.setAdapter(adapter);
 
+
                 // ListView Item Click Listener
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -78,20 +90,37 @@ public class HomeActivity extends AppCompatActivity {
                     public void onItemClick(AdapterView<?> parent, View view,
                                             int position, long id) {
 
-                        // ListView Clicked item index
-                        int itemPosition     = position;
-
-                        // ListView Clicked item value
-                        String  itemValue    = (String) listView.getItemAtPosition(position);
-
-                        // Show Alert
-                        Toast.makeText(getApplicationContext(),
-                                "Position :"+itemPosition+"  ListItem : " +itemValue , Toast.LENGTH_LONG)
-                                .show();
-
+                        startActivity(new Intent(HomeActivity.this, InterviewActivity.class));
                     }
 
                 });
+            }
+        });
+
+        Button home = findViewById(R.id.toHome);
+        home.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(HomeActivity.this, HomeActivity.class));
+            }
+        });
+
+        Button toDo = findViewById(R.id.toDo);
+        toDo.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(HomeActivity.this, HomeActivity.class));
+            }
+        });
+
+        Button profile = findViewById(R.id.toProfile);
+        profile.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
             }
         });
     }
