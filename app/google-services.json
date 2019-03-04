@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "981417752004",
+    "firebase_url": "https://hunt-39230.firebaseio.com",
+    "project_id": "hunt-39230",
+    "storage_bucket": "hunt-39230.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:981417752004:android:2e5202d671a229c8",
+        "android_client_info": {
+          "package_name": "com.interyouhunt.hunt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "981417752004-dedpeo8lcu9qcn1gsg02he9jsfa59m79.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.interyouhunt.hunt",
+            "certificate_hash": "65dc7964f37438084e31cd41a5e78e19fb43f083"
+          }
+        },
+        {
+          "client_id": "981417752004-niso3qmuh3vdbe6j39rkdkq46nh3duo6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0PQEQx4d-ZzUwHBby_3N3qCk7nXp3uls"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "981417752004-niso3qmuh3vdbe6j39rkdkq46nh3duo6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
