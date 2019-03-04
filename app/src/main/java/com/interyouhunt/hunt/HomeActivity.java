@@ -88,7 +88,6 @@ public class HomeActivity extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view,
                                             int position, long id) {
-
                         Map<String,Object> map = data.get(position);
                         Intent intent = new Intent(HomeActivity.this, InterviewActivity.class);
                         intent.putExtra("interviewMap", (HashMap<String, Object>) map);
