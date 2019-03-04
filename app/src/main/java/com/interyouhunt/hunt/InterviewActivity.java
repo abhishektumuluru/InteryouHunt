@@ -19,9 +19,17 @@ public class InterviewActivity extends AppCompatActivity {
         String userCompany = "Google";
         company.setText(userCompany);
 
+        TextView positionType = findViewById(R.id.positionType);
+        String userPositionType = "Software Engineer Fall Intern";
+        positionType.setText(userPositionType);
+
         TextView roundType = findViewById(R.id.roundType);
         String userRound = "Behavioral";
         roundType.setText(userRound);
+
+        TextView recruiterName = findViewById(R.id.recruiter);
+        String userRecruitName  = "Omar Baradei";
+        recruiterName.setText(userRecruitName);
 
         TextView recruiterEmail = findViewById(R.id.recruiterEmail);
         String userRecruitEmail  = "faisalgedi@gmail.com";
