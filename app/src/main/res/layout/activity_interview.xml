@@ -76,7 +76,52 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="34dp"
+            android:paddingTop="24dp"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp">
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="89dp"
+                android:layout_height="wrap_content"
+                android:text="Date:" />
+
+            <TextView
+                android:id="@+id/dateTime"
+                android:paddingLeft="14dp"
+                android:layout_width="214dp"
+                android:layout_height="wrap_content"
+                android:text="interview's round type" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="24dp"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp">
+
+            <TextView
+                android:id="@+id/location"
+                android:layout_width="89dp"
+                android:layout_height="wrap_content"
+                android:text="Location:" />
+
+            <TextView
+                android:id="@+id/userLocation"
+                android:paddingLeft="14dp"
+                android:layout_width="214dp"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="24dp"
             android:paddingLeft="24dp"
             android:paddingRight="24dp">
 
@@ -90,8 +135,30 @@
                 android:id="@+id/roundType"
                 android:paddingLeft="14dp"
                 android:layout_width="214dp"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="24dp"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp">
+
+            <TextView
+                android:id="@+id/type"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="interview's round type" />
+                android:paddingRight="10dp"
+                android:text="Interview Type:" />
+
+            <TextView
+                android:id="@+id/interviewType"
+                android:paddingLeft="14dp"
+                android:layout_width="214dp"
+                android:layout_height="wrap_content"/>
 
         </LinearLayout>
 
