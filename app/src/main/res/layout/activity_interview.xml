@@ -9,9 +9,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="56dp"
-        android:paddingLeft="24dp"
-        android:paddingRight="24dp">
+        android:paddingTop="56dp">
 
 
         <LinearLayout
@@ -52,10 +50,33 @@
         </LinearLayout>
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="24dp"
+            android:paddingTop="56dp"
+            android:paddingRight="24dp">
+
+            <TextView
+                android:id="@+id/position"
+                android:layout_width="89dp"
+                android:layout_height="wrap_content"
+                android:text="Position:" />
+
+            <TextView
+                android:id="@+id/positionType"
+                android:layout_width="214dp"
+                android:layout_height="wrap_content"
+                android:paddingLeft="14dp"
+                android:text="SWE Intern" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="56dp"
+            android:paddingTop="34dp"
             android:paddingLeft="24dp"
             android:paddingRight="24dp">
 
@@ -83,10 +104,31 @@
             android:paddingRight="24dp">
 
             <TextView
-                android:id="@+id/email"
+                android:id="@+id/name"
                 android:layout_width="104dp"
                 android:layout_height="21dp"
                 android:text="Recruiter:" />
+
+            <TextView
+                android:id="@+id/recruiter"
+                android:layout_width="204dp"
+                android:layout_height="wrap_content"
+                android:text="recruiter's name" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="24dp"
+            android:paddingTop="24dp"
+            android:paddingRight="24dp">
+
+            <TextView
+                android:id="@+id/recEmail"
+                android:layout_width="104dp"
+                android:layout_height="21dp"
+                android:text="Recruiter Email:" />
 
             <TextView
                 android:id="@+id/recruiterEmail"
@@ -114,6 +156,37 @@
                 android:layout_width="210dp"
                 android:layout_height="115dp"
                 android:text="these are the notes" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="182dp"
+            android:layout_weight="1"
+            android:gravity="center|bottom"
+            android:orientation="horizontal"
+            android:paddingTop="10dp">
+
+            <Button
+                android:id="@+id/toHome"
+                android:layout_width="135dp"
+                android:layout_height="36dp"
+                android:gravity="center"
+                android:text="HOME" />
+
+            <Button
+                android:id="@+id/toDo"
+                android:layout_width="135dp"
+                android:layout_height="36dp"
+                android:gravity="center"
+                android:text="TO-DO" />
+
+            <Button
+                android:id="@+id/toProfile"
+                android:layout_width="135dp"
+                android:layout_height="36dp"
+                android:gravity="center"
+                android:text="PROFILE" />
+
         </LinearLayout>
 
     </LinearLayout>

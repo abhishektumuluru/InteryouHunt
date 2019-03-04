@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -16,7 +18,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         TextView name = findViewById(R.id.name);
         String userName = "Faisal";
-        userName += " "+"Gedi";
+        userName += " " + "Gedi";
         name.setText(userName);
 
         TextView email = findViewById(R.id.userEmail);
@@ -24,16 +26,35 @@ public class ProfileActivity extends AppCompatActivity {
         email.setText(userEmail);
 
         TextView phone = findViewById(R.id.userPhone);
-        String userPhone  = "678-974-9193";
+        String userPhone = "678-974-9193";
         phone.setText(userPhone);
 
-        Button myButton = findViewById(R.id.back);
-        myButton.setOnClickListener(new View.OnClickListener() {
+        Button home = findViewById(R.id.toHome);
+        home.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(ProfileActivity.this, HomeActivity.class));
             }
         });
+
+        Button toDo = findViewById(R.id.toDo);
+        toDo.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ProfileActivity.this, HomeActivity.class));
+            }
+        });
+
+        Button profile = findViewById(R.id.toProfile);
+        profile.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ProfileActivity.this, ProfileActivity.class));
+            }
+        });
+
     }
 }
