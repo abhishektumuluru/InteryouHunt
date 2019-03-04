@@ -19,6 +19,7 @@
         <activity android:name=".HomeActivity" />
         <activity android:name=".AddCompanyActivity" />
         <activity android:name=".ForumActivity"/>
+        <activity android:name='.RegistrationActivity'/>
     </application>
 
 </manifest>
