@@ -82,6 +82,7 @@ public class HomeActivity extends AppCompatActivity {
                 // Assign adapter to ListView
                 listView.setAdapter(adapter);
 
+
                 // ListView Item Click Listener
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -89,17 +90,7 @@ public class HomeActivity extends AppCompatActivity {
                     public void onItemClick(AdapterView<?> parent, View view,
                                             int position, long id) {
 
-                        // ListView Clicked item index
-                        int itemPosition     = position;
-
-                        // ListView Clicked item value
-                        String  itemValue    = (String) listView.getItemAtPosition(position);
-
-                        // Show Alert
-                        Toast.makeText(getApplicationContext(),
-                                "Position :"+itemPosition+"  ListItem : " +itemValue , Toast.LENGTH_LONG)
-                                .show();
-
+                        startActivity(new Intent(HomeActivity.this, InterviewActivity.class));
                     }
 
                 });
