@@ -9,13 +9,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name=".ToDoActivity"
+            android:label="@string/title_activity_to_do"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".InterviewActivity">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-       </activity>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,11 +27,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ProfileActivity"/>
+        <activity android:name=".ProfileActivity" />
         <activity android:name=".HomeActivity" />
         <activity android:name=".AddCompanyActivity" />
-        <activity android:name=".ForumActivity"/>
-        <activity android:name='.RegistrationActivity'/>
+        <activity android:name=".ForumActivity" />
+        <activity android:name=".RegistrationActivity" />
     </application>
 
 </manifest>

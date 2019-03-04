@@ -15,7 +15,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -99,7 +98,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void getInterviews(String uid, final GetInterviewsCallback callback) {
         final List<Map<String, Object>> interviews = new ArrayList<>();
-        DocumentReference userDoc = db.collection("users").document("PxchPbrpnQvjdkvyaxIF");
+        DocumentReference userDoc = db.collection("users").document(uid);
         userDoc.collection("Interviews").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
