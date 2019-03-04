@@ -2,6 +2,7 @@ package com.interyouhunt.hunt;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,12 +33,20 @@ public class HomeActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     private static final String TAG = "HomeActivity";
     String uid;
+    FloatingActionButton plusButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         mAuth = FirebaseAuth.getInstance();
+        plusButton = findViewById(R.id.btn_plus);
+        plusButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HomeActivity.this.startActivity(new Intent(HomeActivity.this, AddCompanyActivity.class));
+            }
+        });
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
             uid = user.getUid();
