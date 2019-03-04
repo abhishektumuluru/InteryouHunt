@@ -12,19 +12,19 @@ public class InterviewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_interview);
 
-        TextView company = (TextView) findViewById(R.id.company);
+        TextView company = findViewById(R.id.company);
         String userCompany = "Google";
         company.setText(userCompany);
 
-        TextView roundType = (TextView) findViewById(R.id.roundType);
+        TextView roundType = findViewById(R.id.roundType);
         String userRound = "Behavioral";
         roundType.setText(userRound);
 
-        TextView recruiterEmail = (TextView) findViewById(R.id.recruiterEmail);
+        TextView recruiterEmail = findViewById(R.id.recruiterEmail);
         String userRecruitEmail  = "faisalgedi@gmail.com";
         recruiterEmail.setText(userRecruitEmail);
 
-        TextView notes = (TextView) findViewById(R.id.notesText);
+        TextView notes = findViewById(R.id.notesText);
         String userNotes  = "Aye let me tell you something she asked me why I wanna work at Google? I acted like it wasn't for the bread.";
         notes.setText(userNotes);
 
