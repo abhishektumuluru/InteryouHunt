@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:fitsSystemWindows="true">
@@ -22,7 +23,7 @@
             <EditText android:id="@+id/input_company"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Company name" />
+                android:hint="*Company name" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -34,7 +35,7 @@
             <EditText android:id="@+id/input_position"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Position" />
+                android:hint="*Position" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -55,37 +56,23 @@
             android:layout_marginTop="8dp"
             android:backgroundTint="@color/colorPrimary"
             android:layout_marginBottom="8dp">
-            <EditText android:id="@+id/input_recruiter_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Recruiter email" />
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:backgroundTint="@color/colorPrimary"
-            android:layout_marginBottom="8dp">
-            <EditText android:id="@+id/input_passed"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Passed?" />
-        </android.support.design.widget.TextInputLayout>
-
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:backgroundTint="@color/colorPrimary"
-            android:layout_marginBottom="8dp">
             <EditText android:id="@+id/input_recruiter_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Recruiter name" />
         </android.support.design.widget.TextInputLayout>
 
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:layout_marginBottom="8dp">
+            <EditText android:id="@+id/input_recruiter_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Recruiter email" />
+        </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -99,89 +86,99 @@
                 android:hint="Recruiter phone" />
         </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:backgroundTint="@color/colorPrimary"
-            android:layout_marginBottom="8dp">
-            <EditText android:id="@+id/input_feedback"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Feedback" />
-        </android.support.design.widget.TextInputLayout>
+        <!--<android.support.design.widget.TextInputLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="8dp"-->
+            <!--android:backgroundTint="@color/colorPrimary"-->
+            <!--android:layout_marginBottom="8dp">-->
+            <!--<EditText android:id="@+id/input_passed"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:hint="Passed?" />-->
+        <!--</android.support.design.widget.TextInputLayout>-->
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:backgroundTint="@color/colorPrimary"
-            android:layout_marginBottom="8dp">
-            <EditText android:id="@+id/input_stage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Stage" />
-        </android.support.design.widget.TextInputLayout>
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:backgroundTint="@color/colorPrimary"
-            android:layout_marginBottom="8dp">
-            <EditText android:id="@+id/input_interview_type"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Interview type" />
-        </android.support.design.widget.TextInputLayout>
+        <!--<android.support.design.widget.TextInputLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="8dp"-->
+            <!--android:backgroundTint="@color/colorPrimary"-->
+            <!--android:layout_marginBottom="8dp">-->
+            <!--<EditText android:id="@+id/input_feedback"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:hint="Feedback" />-->
+        <!--</android.support.design.widget.TextInputLayout>-->
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:backgroundTint="@color/colorPrimary"
-            android:layout_marginBottom="8dp">
-            <EditText android:id="@+id/input_location"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Location (optional)" />
-        </android.support.design.widget.TextInputLayout>
+        <!--<android.support.design.widget.TextInputLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="8dp"-->
+            <!--android:backgroundTint="@color/colorPrimary"-->
+            <!--android:layout_marginBottom="8dp">-->
+            <!--<EditText android:id="@+id/input_stage"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:hint="Stage" />-->
+        <!--</android.support.design.widget.TextInputLayout>-->
 
+        <!--<android.support.design.widget.TextInputLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="8dp"-->
+            <!--android:backgroundTint="@color/colorPrimary"-->
+            <!--android:layout_marginBottom="8dp">-->
+            <!--<EditText android:id="@+id/input_interview_type"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:hint="Interview type" />-->
+        <!--</android.support.design.widget.TextInputLayout>-->
 
-
-        <EditText
-            android:id="@+id/input_date"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:clickable="true"
-            android:focusable="false"
-            android:inputType="datetime"
-            android:hint="Date"/>
-
-        <TimePicker
-            android:id="@+id/input_time_picker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:backgroundTint="@color/colorPrimary"
-            android:layout_marginBottom="8dp">
-            <EditText android:id="@+id/input_notes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
-                android:lines="8"
-                android:minLines="6"
-                android:maxLines="10"
-                android:scrollbars="vertical"
-                android:hint="Notes" />
-        </android.support.design.widget.TextInputLayout>
+        <!--<android.support.design.widget.TextInputLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="8dp"-->
+            <!--android:backgroundTint="@color/colorPrimary"-->
+            <!--android:layout_marginBottom="8dp">-->
+            <!--<EditText android:id="@+id/input_location"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:hint="Location (optional)" />-->
+        <!--</android.support.design.widget.TextInputLayout>-->
 
 
 
+        <!--<EditText-->
+            <!--android:id="@+id/input_date"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:clickable="true"-->
+            <!--android:focusable="false"-->
+            <!--android:inputType="datetime"-->
+            <!--android:hint="Date"/>-->
+
+        <!--<TimePicker-->
+            <!--android:id="@+id/input_time_picker"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content" />-->
+
+
+        <!--<android.support.design.widget.TextInputLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="8dp"-->
+            <!--android:backgroundTint="@color/colorPrimary"-->
+            <!--android:layout_marginBottom="8dp">-->
+            <!--<EditText android:id="@+id/input_notes"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:inputType="textMultiLine"-->
+                <!--android:lines="8"-->
+                <!--android:minLines="6"-->
+                <!--android:maxLines="10"-->
+                <!--android:scrollbars="vertical"-->
+                <!--android:hint="Notes" />-->
+        <!--</android.support.design.widget.TextInputLayout>-->
 
 
         <android.support.v7.widget.AppCompatButton
@@ -191,7 +188,8 @@
             android:layout_marginTop="0dp"
             android:layout_marginBottom="24dp"
             android:padding="12dp"
-            android:text="Add company"/>
+            android:text="Add company"
+            tools:enabled="false" />
 
     </LinearLayout>x
 </ScrollView>
