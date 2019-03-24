@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -18,16 +20,11 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +33,9 @@ public class ForumActivity extends AppCompatActivity {
     private final String TAG = "ForumActivity";
     FirebaseFirestore db;
     private ListView forumListView;
+    private String[] titles;
+    private String[] descriptions;
+    private String[] companies;
 
 
     @Override
@@ -65,25 +65,61 @@ public class ForumActivity extends AppCompatActivity {
                     titlesList.add(postTitle);
 
                 }
-                final String titles[] = titlesList.toArray(new String[titlesList.size()]);
-                final String descriptions[] = descriptionsList.toArray(new String[descriptionsList.size()]);
-                final String companies[] = companiesList.toArray(new String[companiesList.size()]);
+                titles = titlesList.toArray(new String[titlesList.size()]);
+                descriptions = descriptionsList.toArray(new String[descriptionsList.size()]);
+                companies = companiesList.toArray(new String[companiesList.size()]);
                 final int images[] = new int[]{0, 0};
 
 
-                CustomListAdapter adapter = new CustomListAdapter(ForumActivity.this, titles, descriptions, images, companies);
+                final CustomListAdapter adapter = new CustomListAdapter(ForumActivity.this, titles, descriptions, images, companies);
                 forumListView.setAdapter(adapter);
                 forumListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         // Start a new activity or open up a new fragment with the post in it
                         Toast.makeText(ForumActivity.this, "" + position, Toast.LENGTH_SHORT).show();
-                        openForumPost(titles[position], descriptions[position]);
                     }
                 });
 
+                Button searchButton = findViewById(R.id.company_search_button);
+
+                final List<String> companyQueryResults = new ArrayList<>();
+                final List<String> descriptionQueryResults = new ArrayList<>();
+                final List<String> postTitleQueryResults = new ArrayList<>();
+
+                searchButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        EditText searchEditText = findViewById(R.id.company_search_edittext);
+                        final String searchQuery = searchEditText.getText().toString().toLowerCase();
+                        for (int i = 0; i < companies.length; i++) {
+                            String company = companies[i];
+                            if ((company.toLowerCase()).contains(searchQuery)) {
+                                companyQueryResults.add(company);
+                                descriptionQueryResults.add(descriptions[i]);
+                                postTitleQueryResults.add(titles[i]);
+                            }
+                        }
+
+                        String[] searchTitles = postTitleQueryResults.toArray(new String[postTitleQueryResults.size()]);
+                        String[] searchDescriptions = descriptionQueryResults.toArray(new String[descriptionQueryResults.size()]);
+                        String[] searchCompanies = companyQueryResults.toArray(new String[companyQueryResults.size()]);
+                        postTitleQueryResults.clear();
+                        descriptionQueryResults.clear();
+                        companyQueryResults.clear();
+
+                        forumListView.setAdapter(null);
+                        final CustomListAdapter newAdapter = new CustomListAdapter(ForumActivity.this, searchTitles, searchDescriptions, images, searchCompanies);
+                        forumListView.setAdapter(newAdapter);
+                        adapter.notifyDataSetChanged();
+                    }
+                });
             }
         });
+
+
+
+
 
     }
 
@@ -121,10 +157,6 @@ public class ForumActivity extends AppCompatActivity {
         }
     }
 
-    protected void openForumPost(final String title, final String description) {
-        // Open up a forum post here
-        // Fragment or drawer
-    }
 
 
     private void getTips(final GetTipsCallback callback) {
