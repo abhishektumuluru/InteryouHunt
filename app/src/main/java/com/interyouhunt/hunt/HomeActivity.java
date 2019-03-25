@@ -11,7 +11,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -45,7 +44,7 @@ public class HomeActivity extends AppCompatActivity {
         plusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HomeActivity.this.startActivity(new Intent(HomeActivity.this, AddCompanyActivity.class));
+                HomeActivity.this.startActivity(new Intent(HomeActivity.this, AddPositionActivity.class));
             }
         });
         FirebaseUser user = mAuth.getCurrentUser();

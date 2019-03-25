@@ -1,6 +1,5 @@
 package com.interyouhunt.hunt;
 
-import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -11,9 +10,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -22,17 +19,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
-public class AddCompanyActivity extends AppCompatActivity {
+public class AddPositionActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
-    private Button addCompanyButton;
+    private Button addPositionButton;
 //    private EditText dateEditText;
 //    private Calendar myCalendar;
 //    private TimePicker timePicker;
@@ -61,11 +56,11 @@ public class AddCompanyActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_company);
+        setContentView(R.layout.activity_add_position);
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-        addCompanyButton = findViewById(R.id.btn_add_company);
-        addCompanyButton.setEnabled(false);
+        addPositionButton = findViewById(R.id.btn_add_position);
+        addPositionButton.setEnabled(false);
 
         mProgressDialog = new ProgressDialog(this);
 
@@ -80,10 +75,10 @@ public class AddCompanyActivity extends AppCompatActivity {
         companyName.addTextChangedListener(watcher);
         position.addTextChangedListener(watcher);
 
-        addCompanyButton.setOnClickListener(new View.OnClickListener() {
+        addPositionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Map<String, String> interviewInfo = loadFields();
+                Map<String, Object> interviewInfo = loadFields();
                 mProgressDialog.setMessage("Adding company");
                 mProgressDialog.show();
                 writeToFirestore(interviewInfo);
@@ -109,7 +104,7 @@ public class AddCompanyActivity extends AppCompatActivity {
 //
 //            @Override
 //            public void onClick(View v) {
-//                new DatePickerDialog(AddCompanyActivity.this, date, myCalendar
+//                new DatePickerDialog(AddPositionActivity.this, date, myCalendar
 //                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
 //                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
 //            }
@@ -117,16 +112,17 @@ public class AddCompanyActivity extends AppCompatActivity {
 
     }
 
-    private Map<String, String> loadFields() {
+    private Map<String, Object> loadFields() {
 
         // end info to store
-        Map<String, String> interviewInfo = new HashMap<>();
+        Map<String, Object> interviewInfo = new HashMap<>();
         interviewInfo.put("companyName", companyName.getText().toString());
         interviewInfo.put("position", position.getText().toString());
         interviewInfo.put("positionType", positionType.getText().toString());
         interviewInfo.put("recruiterEmail", recruiterEmail.getText().toString());
         interviewInfo.put("recruiterName", recruiterName.getText().toString());
         interviewInfo.put("recruiterPhoneNumber", recruiterPhoneNumber.getText().toString());
+        interviewInfo.put("stages", Arrays.asList());
         return interviewInfo;
 
 //        time = "" + timePicker.getHour() + ":" + timePicker.getMinute();
@@ -147,17 +143,17 @@ public class AddCompanyActivity extends AppCompatActivity {
     }
 
 
-    private void writeToFirestore(Map<String, String> interviewInfo) {
+    private void writeToFirestore(Map<String, Object> interviewInfo) {
         FirebaseUser user = mAuth.getCurrentUser();
-        final String TAG = "AddCompanyActivity";
+        final String TAG = "AddPositionActivity";
         String uid = user.getUid();
 
         db.collection("users").document(uid).collection("Interviews").document().set(interviewInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Log.d(TAG, "DocumentSnapshot successfully written!");
-                Toast.makeText(AddCompanyActivity.this, "Added company", Toast.LENGTH_LONG).show();
-                AddCompanyActivity.this.startActivity(new Intent(AddCompanyActivity.this, HomeActivity.class));
+                Toast.makeText(AddPositionActivity.this, "Added company", Toast.LENGTH_LONG).show();
+                AddPositionActivity.this.startActivity(new Intent(AddPositionActivity.this, HomeActivity.class));
             }
         })
                 .addOnFailureListener(new OnFailureListener() {
@@ -178,9 +174,9 @@ public class AddCompanyActivity extends AppCompatActivity {
         @Override
         public void afterTextChanged(Editable s) {
             if (companyName.getText().toString().length() == 0 || position.getText().toString().length() == 0 ) {
-                addCompanyButton.setEnabled(false);
+                addPositionButton.setEnabled(false);
             } else {
-                addCompanyButton.setEnabled(true);
+                addPositionButton.setEnabled(true);
             }
         }
     };
