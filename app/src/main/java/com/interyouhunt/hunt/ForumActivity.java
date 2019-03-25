@@ -1,6 +1,10 @@
 package com.interyouhunt.hunt;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -77,7 +82,8 @@ public class ForumActivity extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         // Start a new activity or open up a new fragment with the post in it
-                        Toast.makeText(ForumActivity.this, "" + position, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ForumActivity.this, "Opening", Toast.LENGTH_SHORT).show();
+                        openPost(titles[position], descriptions[position], companies[position]);
                     }
                 });
 
@@ -180,7 +186,42 @@ public class ForumActivity extends AppCompatActivity {
                 });
     }
 
+    protected void openPost(String title, String description, String company) {
+        ViewDialog alert = new ViewDialog();
+        alert.showDialog(this, title, description, company);
+    }
+
     public interface GetTipsCallback {
         void onCallback(List<Map<String, Object>> value);
+    }
+
+    public class ViewDialog {
+
+        public void showDialog(Activity activity, String title, String description, String company){
+            final Dialog dialog = new Dialog(activity, R.style.Theme_AppCompat_Light_Dialog_Alert);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setCancelable(false);
+            dialog.setContentView(R.layout.dialog);
+
+            TextView titleTextView = dialog.findViewById(R.id.dialog_title_textview);
+            TextView descriptionTextView = dialog.findViewById(R.id.dialog_description_textview);
+            TextView companyTextView = dialog.findViewById(R.id.dialog_company_textview);
+
+            titleTextView.setText(title);
+            descriptionTextView.setText(description);
+            companyTextView.setText(company);
+
+            Button dialogButton = dialog.findViewById(R.id.btn_dialog);
+            dialogButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+
+            dialog.show();
+
+        }
     }
 }
