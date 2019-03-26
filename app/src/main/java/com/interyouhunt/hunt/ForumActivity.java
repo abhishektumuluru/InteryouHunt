@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +33,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -256,6 +259,8 @@ public class ForumActivity extends AppCompatActivity {
             final EditText titleTextView = dialog.findViewById(R.id.open_dialog_title_textview);
             final EditText descriptionTextView = dialog.findViewById(R.id.open_dialog_description_textview);
             final EditText companyTextView = dialog.findViewById(R.id.open_dialog_company_textview);
+            final EditText positionTextView = dialog.findViewById(R.id.open_dialog_position_textview);
+            final Spinner interviewTypeSpinner = dialog.findViewById(R.id.interview_type_spinner);
 
 
             Button postButton = dialog.findViewById(R.id.post_btn_dialog);
@@ -266,12 +271,14 @@ public class ForumActivity extends AppCompatActivity {
                     final String titleText = titleTextView.getText().toString();
                     final String descriptionText = descriptionTextView.getText().toString();
                     final String companyText = companyTextView.getText().toString();
+                    final String position = positionTextView.getText().toString();
+                    final String interviewType = interviewTypeSpinner.getSelectedItem().toString();
 
-                    if (TextUtils.isEmpty(titleText) || TextUtils.isEmpty(descriptionText) || TextUtils.isEmpty(companyText)) {
+                    if (TextUtils.isEmpty(interviewType) || TextUtils.isEmpty(titleText) || TextUtils.isEmpty(descriptionText) || TextUtils.isEmpty(companyText) || TextUtils.isEmpty(position)) {
                         Toast.makeText(ForumActivity.this, "Please complete all fields", Toast.LENGTH_LONG).show();
                         return;
                     }
-                    submitPost(titleText, descriptionText, companyText);
+                    submitPost(titleText, descriptionText, companyText, position, interviewType);
                     Toast.makeText(ForumActivity.this, "Posting", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                 }
@@ -282,11 +289,13 @@ public class ForumActivity extends AppCompatActivity {
         }
     }
 
-    protected void submitPost(String titleText, String descriptionText, String companyText) {
+    protected void submitPost(String titleText, String descriptionText, String companyText, String position, String type) {
         Map<String, Object> postInfo = new HashMap<>();
         postInfo.put("Company", companyText);
         postInfo.put("description", descriptionText);
         postInfo.put("postTitle", titleText);
+        postInfo.put("position", position);
+        postInfo.put("type", type);
 
 
         db.collection("tips").document().set(postInfo).addOnSuccessListener(new OnSuccessListener<Void>() {

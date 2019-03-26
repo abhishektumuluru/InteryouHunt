@@ -2,4 +2,20 @@
     <string name="app_name">Hunt</string>
     <string name="title_activity_registration">RegistrationActivity</string>
     <string name="title_activity_to_do">ToDoActivity</string>
+    <string-array name="interview_types_array">
+        <item>Behavioral</item>
+        <item>Technical</item>
+        <item>Technical (coding) </item>
+        <item>Case</item>
+        <item>Panel</item>
+        <item>Problem Solving</item>
+        <item>System Design</item>
+        <item>Design</item>
+        <item>HR</item>
+
+    </string-array>
+
+
 </resources>
+
+
