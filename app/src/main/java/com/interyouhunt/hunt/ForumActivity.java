@@ -49,6 +49,8 @@ public class ForumActivity extends AppCompatActivity {
     private String[] titles;
     private String[] descriptions;
     private String[] companies;
+    private String[] positions;
+    private String[] interviewTypes;
     final Map<String, Integer> companyToLogoMap = new HashMap<>();
 
     @Override
@@ -62,6 +64,9 @@ public class ForumActivity extends AppCompatActivity {
         final List<String> titlesList = new ArrayList<>();
         final List<String> descriptionsList = new ArrayList<>();
         final List<String> companiesList = new ArrayList<>();
+        final List<String> positionsList = new ArrayList<>();
+        final List<String> interviewTypesList = new ArrayList<>();
+
 
         companyToLogoMap.put("Google", R.drawable.common_google_signin_btn_icon_dark);
         companyToLogoMap.put("Facebook", R.drawable.fblogo);
@@ -81,25 +86,29 @@ public class ForumActivity extends AppCompatActivity {
                     String company = (String) interview.get("Company");
                     String description = (String) interview.get("description");
                     String postTitle = (String) interview.get("postTitle");
+                    String position = (String) interview.get("position");
+                    String interviewType = (String) interview.get("type");
                     companiesList.add(company);
                     descriptionsList.add(description);
                     titlesList.add(postTitle);
+                    positionsList.add(position);
+                    interviewTypesList.add(interviewType);
 
                 }
                 titles = titlesList.toArray(new String[titlesList.size()]);
                 descriptions = descriptionsList.toArray(new String[descriptionsList.size()]);
                 companies = companiesList.toArray(new String[companiesList.size()]);
-                final int images[] = new int[]{0, 0};
+                positions = positionsList.toArray(new String[positionsList.size()]);
+                interviewTypes = interviewTypesList.toArray(new String[interviewTypesList.size()]);
 
 
-
-                final CustomListAdapter adapter = new CustomListAdapter(ForumActivity.this, titles, descriptions, images, companies);
+                final CustomListAdapter adapter = new CustomListAdapter(ForumActivity.this, titles, descriptions, companies, positions, interviewTypes);
                 forumListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         // Start a new activity or open up a new fragment with the post in it
                         Toast.makeText(ForumActivity.this, "Opening", Toast.LENGTH_SHORT).show();
-                        openPost(titles[position], descriptions[position], companies[position]);
+                        openPost(titles[position], descriptions[position], companies[position], positions[position], interviewTypes[position]);
                     }
                 });
 
@@ -108,6 +117,9 @@ public class ForumActivity extends AppCompatActivity {
                 final List<String> companyQueryResults = new ArrayList<>();
                 final List<String> descriptionQueryResults = new ArrayList<>();
                 final List<String> postTitleQueryResults = new ArrayList<>();
+                final List<String> positionsQueryResults = new ArrayList<>();
+                final List<String> typesQueryResults = new ArrayList<>();
+
 
                 searchButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -120,18 +132,26 @@ public class ForumActivity extends AppCompatActivity {
                                 companyQueryResults.add(company);
                                 descriptionQueryResults.add(descriptions[i]);
                                 postTitleQueryResults.add(titles[i]);
+                                positionsQueryResults.add(positions[i]);
+                                typesQueryResults.add(interviewTypes[i]);
+
                             }
                         }
 
                         String[] searchTitles = postTitleQueryResults.toArray(new String[postTitleQueryResults.size()]);
                         String[] searchDescriptions = descriptionQueryResults.toArray(new String[descriptionQueryResults.size()]);
                         String[] searchCompanies = companyQueryResults.toArray(new String[companyQueryResults.size()]);
+                        String[] searchPositions = positionsQueryResults.toArray(new String[positionsQueryResults.size()]);
+                        String[] searchTypes = typesQueryResults.toArray(new String[typesQueryResults.size()]);
+
                         postTitleQueryResults.clear();
                         descriptionQueryResults.clear();
                         companyQueryResults.clear();
+                        typesQueryResults.clear();
+                        postTitleQueryResults.clear();
 
                         forumListView.setAdapter(null);
-                        final CustomListAdapter newAdapter = new CustomListAdapter(ForumActivity.this, searchTitles, searchDescriptions, images, searchCompanies);
+                        final CustomListAdapter newAdapter = new CustomListAdapter(ForumActivity.this, searchTitles, searchDescriptions, searchCompanies, searchPositions, searchTypes);
                         forumListView.setAdapter(newAdapter);
                         adapter.notifyDataSetChanged();
                     }
@@ -162,15 +182,17 @@ public class ForumActivity extends AppCompatActivity {
         String title[];
         String description[];
         String company[];
+        String[] interviewTypes;
+        String[] positions;
 
-        int images[]; // optional
 
-        CustomListAdapter(Context context, String title[], String description[], int images[], String company[]) {
+        CustomListAdapter(Context context, String title[], String description[], String company[], String[] positions, String[] interviewTypes) {
             super(context, R.layout.forumrow, R.id.main_title_textview, title);
             this.context = context;
             this.title = title;
             this.description = description;
-            this.images = images;
+            this.positions = positions;
+            this.interviewTypes = interviewTypes;
             this.company = company;
         }
 
@@ -183,9 +205,16 @@ public class ForumActivity extends AppCompatActivity {
             TextView title = row.findViewById(R.id.main_title_textview);
             TextView description = row.findViewById(R.id.main_description_textview);
             TextView company = row.findViewById(R.id.company_textview);
+
+            TextView positionTextView = row.findViewById(R.id.company_position);
+            TextView type = row.findViewById(R.id.company_interview_type);
+
             title.setText(this.title[position]);
             description.setText(this.description[position]);
             company.setText(this.company[position]);
+            positionTextView.setText(this.positions[position]);
+            type.setText(this.interviewTypes[position]);
+
             if (companyToLogoMap.containsKey(this.company[position])) {
                 image.setImageDrawable(getResources().getDrawable(companyToLogoMap.get(this.company[position])));
             } else {
@@ -219,9 +248,9 @@ public class ForumActivity extends AppCompatActivity {
                 });
     }
 
-    protected void openPost(String title, String description, String company) {
+    protected void openPost(String title, String description, String company, String position, String interviewType) {
         ViewDialog alert = new ViewDialog();
-        alert.showOpenedPostDialog(this, title, description, company);
+        alert.showOpenedPostDialog(this, title, description, company, position, interviewType);
     }
 
     protected void openCreatePost() {
@@ -235,7 +264,7 @@ public class ForumActivity extends AppCompatActivity {
 
     public class ViewDialog {
 
-        public void showOpenedPostDialog(Activity activity, String title, String description, String company){
+        public void showOpenedPostDialog(Activity activity, String title, String description, String company, String position, String interviewType){
             final Dialog dialog = new Dialog(activity, R.style.Theme_AppCompat_Light_Dialog_Alert);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
