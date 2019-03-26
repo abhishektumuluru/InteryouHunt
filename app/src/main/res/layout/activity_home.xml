@@ -6,6 +6,15 @@
     android:orientation="vertical"
     android:layout_height="match_parent"
     tools:context="com.interyouhunt.hunt.HomeActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Your Interviews"
+        android:textStyle="bold|italic"
+        android:layout_marginLeft="15dp"
+        android:paddingBottom="10dp"
+        android:textSize="25sp"/>
     <ListView
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -33,24 +42,31 @@
 
         <Button
             android:id="@+id/toHome"
-            android:layout_width="135dp"
+            android:layout_width="100dp"
             android:layout_height="36dp"
             android:gravity="center"
             android:text="HOME" />
 
         <Button
             android:id="@+id/toDo"
-            android:layout_width="135dp"
+            android:layout_width="100dp"
             android:layout_height="36dp"
             android:gravity="center"
             android:text="TO-DO" />
 
         <Button
             android:id="@+id/toProfile"
-            android:layout_width="135dp"
+            android:layout_width="100dp"
             android:layout_height="36dp"
             android:gravity="center"
             android:text="PROFILE" />
+
+        <Button
+            android:id="@+id/toForum"
+            android:layout_width="100dp"
+            android:layout_height="36dp"
+            android:gravity="center"
+            android:text="FORUM" />
 
     </LinearLayout>
 
