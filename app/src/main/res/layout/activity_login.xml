@@ -2,7 +2,9 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:focusableInTouchMode="true"
+    android:focusable="true">
 
     <LinearLayout
         android:orientation="vertical"
@@ -10,7 +12,9 @@
         android:layout_height="wrap_content"
         android:paddingTop="56dp"
         android:paddingLeft="24dp"
-        android:paddingRight="24dp">
+        android:paddingRight="24dp"
+        android:focusableInTouchMode="true"
+        android:focusable="true">
 
         <ImageView
             android:layout_width="wrap_content"

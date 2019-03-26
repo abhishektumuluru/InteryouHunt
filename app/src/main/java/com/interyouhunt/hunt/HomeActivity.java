@@ -11,7 +11,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -36,17 +35,29 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
     private static final String TAG = "HomeActivity";
     String uid;
     FloatingActionButton plusButton;
+    Button forumButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         mAuth = FirebaseAuth.getInstance();
+
+        forumButton = findViewById(R.id.toForum);
+        forumButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(HomeActivity.this, ForumActivity.class);
+                startActivity(i);
+            }
+        });
+
+
         plusButton = findViewById(R.id.btn_plus);
         plusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HomeActivity.this.startActivity(new Intent(HomeActivity.this, AddCompanyActivity.class));
+                HomeActivity.this.startActivity(new Intent(HomeActivity.this, AddPositionActivity.class));
             }
         });
         FirebaseUser user = mAuth.getCurrentUser();

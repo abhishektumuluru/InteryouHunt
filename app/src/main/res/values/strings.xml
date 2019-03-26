@@ -10,4 +10,17 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_add_stage">AddStageActivity</string>
     <string name="title_activity_view_position_details">ViewPositionDetailsActivity</string>
+    <string-array name="interview_types_array">
+        <item>Behavioral</item>
+        <item>Technical</item>
+        <item>Technical (coding) </item>
+        <item>Case</item>
+        <item>Panel</item>
+        <item>Problem Solving</item>
+        <item>System Design</item>
+        <item>Design</item>
+        <item>HR</item>
+    </string-array>
 </resources>
+
+
