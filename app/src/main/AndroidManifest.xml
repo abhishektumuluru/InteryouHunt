@@ -9,13 +9,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name=".ViewPositionDetailsActivity"
+            android:label="@string/title_activity_view_position_details"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".AddStageActivity"
+            android:label="@string/title_activity_add_stage"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".intActivity"
+            android:label="@string/title_activity_int"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".InterviewActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".HomeActivity" />
         <activity android:name=".AddCompanyActivity" />
@@ -23,8 +35,7 @@
         <activity android:name=".RegistrationActivity" />
         <activity
             android:name=".ToDoActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

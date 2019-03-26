@@ -22,12 +22,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements Serializable {
 
     ListView listView;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -88,9 +89,17 @@ public class HomeActivity extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view,
                                             int position, long id) {
-                        Map<String,Object> map = data.get(position);
-                        Intent intent = new Intent(HomeActivity.this, InterviewActivity.class);
-                        intent.putExtra("interviewMap", (HashMap<String, Object>) map);
+                        HashMap<String,Object> map = (HashMap<String, Object>) data.get(position);
+//                        for (String name: map.keySet()){
+//                            String key =name.toString();
+//                            String value = map.get(name).toString();
+//                            System.out.println(key + " " + value);
+//                            Log.d(TAG, "MAP: " + key + "  " + value);
+//                        }
+                        Intent intent = new Intent(HomeActivity.this, intActivity.class);
+                        Bundle extras = new Bundle();
+                        extras.putSerializable("interviewMap", map);
+                        intent.putExtras(extras);
                         startActivity(intent);
 
                     }

@@ -2,4 +2,12 @@
     <string name="app_name">Hunt</string>
     <string name="title_activity_registration">RegistrationActivity</string>
     <string name="title_activity_to_do">ToDoActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_int">intActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_add_stage">AddStageActivity</string>
+    <string name="title_activity_view_position_details">ViewPositionDetailsActivity</string>
 </resources>
