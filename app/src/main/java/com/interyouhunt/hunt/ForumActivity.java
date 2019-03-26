@@ -3,6 +3,7 @@ package com.interyouhunt.hunt;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
@@ -24,12 +25,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -76,8 +80,8 @@ public class ForumActivity extends AppCompatActivity {
                 final int images[] = new int[]{0, 0};
 
 
+
                 final CustomListAdapter adapter = new CustomListAdapter(ForumActivity.this, titles, descriptions, images, companies);
-                forumListView.setAdapter(adapter);
                 forumListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -118,6 +122,18 @@ public class ForumActivity extends AppCompatActivity {
                         final CustomListAdapter newAdapter = new CustomListAdapter(ForumActivity.this, searchTitles, searchDescriptions, images, searchCompanies);
                         forumListView.setAdapter(newAdapter);
                         adapter.notifyDataSetChanged();
+                    }
+                });
+
+
+                // hack to start search
+                searchButton.performClick();
+
+                final Button addPostButton = findViewById(R.id.add_post_button);
+                addPostButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        openCreatePost();
                     }
                 });
             }
@@ -188,7 +204,12 @@ public class ForumActivity extends AppCompatActivity {
 
     protected void openPost(String title, String description, String company) {
         ViewDialog alert = new ViewDialog();
-        alert.showDialog(this, title, description, company);
+        alert.showOpenedPostDialog(this, title, description, company);
+    }
+
+    protected void openCreatePost() {
+        ViewDialog alert = new ViewDialog();
+        alert.createPostDialog(this);
     }
 
     public interface GetTipsCallback {
@@ -197,7 +218,7 @@ public class ForumActivity extends AppCompatActivity {
 
     public class ViewDialog {
 
-        public void showDialog(Activity activity, String title, String description, String company){
+        public void showOpenedPostDialog(Activity activity, String title, String description, String company){
             final Dialog dialog = new Dialog(activity, R.style.Theme_AppCompat_Light_Dialog_Alert);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -223,5 +244,59 @@ public class ForumActivity extends AppCompatActivity {
             dialog.show();
 
         }
+
+        public void createPostDialog(Activity activity){
+            final Dialog dialog = new Dialog(activity, R.style.Theme_AppCompat_Light_Dialog_Alert);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setCancelable(false);
+            dialog.setContentView(R.layout.openpostdialog);
+
+            final EditText titleTextView = dialog.findViewById(R.id.open_dialog_title_textview);
+            final EditText descriptionTextView = dialog.findViewById(R.id.open_dialog_description_textview);
+            final EditText companyTextView = dialog.findViewById(R.id.open_dialog_company_textview);
+
+
+            Button postButton = dialog.findViewById(R.id.post_btn_dialog);
+            postButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    final String titleText = titleTextView.getText().toString();
+                    final String descriptionText = descriptionTextView.getText().toString();
+                    final String companyText = companyTextView.getText().toString();
+                    submitPost(titleText, descriptionText, companyText);
+                    Toast.makeText(ForumActivity.this, "Posting", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                }
+            });
+
+            dialog.show();
+
+        }
     }
+
+    protected void submitPost(String titleText, String descriptionText, String companyText) {
+        Map<String, Object> postInfo = new HashMap<>();
+        postInfo.put("Company", companyText);
+        postInfo.put("description", descriptionText);
+        postInfo.put("postTitle", titleText);
+
+
+        db.collection("tips").document().set(postInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, "DocumentSnapshot successfully written!");
+                Toast.makeText(ForumActivity.this, "Added company", Toast.LENGTH_LONG).show();
+                ForumActivity.this.startActivity(new Intent(ForumActivity.this, HomeActivity.class));
+            }
+        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error writing document", e);
+                    }
+                });
+    }
+
 }

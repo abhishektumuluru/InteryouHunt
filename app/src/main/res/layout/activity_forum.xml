@@ -17,7 +17,7 @@
 
         <EditText
         android:id="@+id/company_search_edittext"
-        android:layout_width="350dp"
+        android:layout_width="300dp"
         android:layout_height="50dp"
         android:hint="Search company"
         android:textSize="18sp"
@@ -29,6 +29,12 @@
         android:layout_width="60dp"
         android:layout_height="50dp"
         android:drawableStart="@android:drawable/ic_menu_search"/>
+
+    <Button
+        android:layout_width="60dp"
+        android:layout_height="50dp"
+        android:id="@+id/add_post_button"
+        android:drawableStart="@android:drawable/ic_input_add"/>
 
     </LinearLayout>
 
