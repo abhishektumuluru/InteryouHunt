@@ -34,12 +34,24 @@ public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "HomeActivity";
     String uid;
     FloatingActionButton plusButton;
+    Button forumButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         mAuth = FirebaseAuth.getInstance();
+
+        forumButton = findViewById(R.id.toForum);
+        forumButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(HomeActivity.this, ForumActivity.class);
+                startActivity(i);
+            }
+        });
+
+
         plusButton = findViewById(R.id.btn_plus);
         plusButton.setOnClickListener(new View.OnClickListener() {
             @Override
