@@ -49,7 +49,7 @@ public class ForumActivity extends AppCompatActivity {
     private String[] titles;
     private String[] descriptions;
     private String[] companies;
-
+    final Map<String, Integer> companyToLogoMap = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +62,14 @@ public class ForumActivity extends AppCompatActivity {
         final List<String> titlesList = new ArrayList<>();
         final List<String> descriptionsList = new ArrayList<>();
         final List<String> companiesList = new ArrayList<>();
+
+        companyToLogoMap.put("Google", R.drawable.common_google_signin_btn_icon_dark);
+        companyToLogoMap.put("Facebook", R.drawable.fblogo);
+        companyToLogoMap.put("Snapchat", R.drawable.snaplogo);
+        companyToLogoMap.put("GTRI", R.drawable.gtlogo);
+        companyToLogoMap.put("Pinterest", R.drawable.pinterestlogo);
+
+
 
         // Titles and descriptions are arrays you get from firebase
 
@@ -178,7 +186,12 @@ public class ForumActivity extends AppCompatActivity {
             title.setText(this.title[position]);
             description.setText(this.description[position]);
             company.setText(this.company[position]);
-            // image.setImageDrawable(this.images[position]);
+            if (companyToLogoMap.containsKey(this.company[position])) {
+                image.setImageDrawable(getResources().getDrawable(companyToLogoMap.get(this.company[position])));
+            } else {
+                // If the company's logo is not hardcoded in our map, then use this
+                image.setImageDrawable(getResources().getDrawable(R.drawable.common_google_signin_btn_icon_dark));
+            }
             return row;
         }
     }
