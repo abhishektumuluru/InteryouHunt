@@ -1,0 +1,195 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/dialog_background">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="5dp"
+        android:textSize="16sp"
+        android:id="@+id/info_screen_company_name_textview"
+        android:text="Company"
+        android:textStyle="bold|italic"
+        android:textColor="#ff000000"
+        android:gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="4dp"
+        android:id="@+id/info_screen_company_name_displayed"
+        android:layout_below="@+id/info_screen_company_name_textview"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="5dp"
+        android:textSize="16sp"
+        android:textStyle="italic"
+        android:textColor="#ff000000"
+        android:gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="4dp"
+        android:id="@+id/info_screen_position"
+        android:layout_below="@+id/info_screen_company_name_displayed"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="5dp"
+        android:textSize="16sp"
+        android:text="Position"
+        android:textStyle="bold|italic"
+        android:textColor="#ff000000"
+        android:gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="5dp"
+        android:textSize="16sp"
+        android:id="@+id/info_screen_position_displayed"
+        android:layout_below="@+id/info_screen_position"
+        android:textStyle="italic"
+        android:textColor="#ff000000"
+        android:gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:text="Position Type"
+        android:id="@+id/info_screen_position_type"
+        android:layout_marginBottom="5dp"
+        android:textSize="16sp"
+        android:textStyle="bold|italic"
+        android:layout_below="@+id/info_screen_position_displayed"
+        android:textColor="#ff000000"
+        android:gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="5dp"
+        android:id="@+id/info_screen_position_type_displayed"
+        android:layout_below="@+id/info_screen_position_type"
+        android:textSize="16sp"
+        android:textStyle="italic"
+        android:textColor="#ff000000"
+        android:gravity="center_horizontal" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="5dp"
+        android:textSize="16sp"
+        android:id="@+id/info_screen_recruiter_email"
+        android:text="Recruiter email"
+        android:layout_below="@+id/info_screen_position_type_displayed"
+        android:textStyle="bold|italic"
+        android:textColor="#ff000000"
+        android:gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/info_screen_recruiter_email"
+        android:id="@+id/info_screen_recruiter_email_displayed"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="5dp"
+        android:textSize="16sp"
+        android:textStyle="italic"
+        android:textColor="#ff000000"
+        android:gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/info_screen_recruiter_email_displayed"
+        android:id="@+id/info_screen_recruiter_name"
+        android:text="Recruiter Name"
+        android:textStyle="bold|italic"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="5dp"
+        android:textSize="16sp"
+        android:textColor="#ff000000"
+        android:gravity="center_horizontal" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="4dp"
+        android:id="@+id/info_screen_recruiter_name_displayed"
+        android:layout_below="@+id/info_screen_recruiter_name"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="5dp"
+        android:textSize="16sp"
+        android:textStyle="italic"
+        android:textColor="#ff000000"
+        android:gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/info_screen_recruiter_name_displayed"
+        android:id="@+id/info_screen_recruiter_phone_number"
+        android:text="Recruiter Phone"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="5dp"
+        android:textSize="16sp"
+        android:textStyle="bold|italic"
+        android:textColor="#ff000000"
+        android:gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="5dp"
+        android:textStyle="italic"
+        android:textSize="16sp"
+        android:id="@+id/info_screen_recruiter_phone_number_displayed"
+        android:layout_below="@+id/info_screen_recruiter_phone_number"
+        android:textColor="#ff000000"
+        android:gravity="center_horizontal" />
+    
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:id="@+id/btn_dialog"
+        android:gravity="center_horizontal"
+        android:text="Dismiss"
+        android:layout_below="@+id/info_screen_recruiter_phone_number_displayed"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="5dp"
+        android:textColor="#ff000000" />
+
+</RelativeLayout>

@@ -1,6 +1,10 @@
 package com.interyouhunt.hunt;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,6 +16,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -31,7 +36,12 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 
+import android.view.Window;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -136,17 +146,12 @@ public class intActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             case R.id.action_info:
-                Intent intent1 = new Intent(intActivity.this, ViewPositionDetailsActivity.class);
-                Bundle extras1 = new Bundle();
-                extras1.putSerializable("interviewMap", map);
-                intent1.putExtras(extras1);
-                startActivity(intent1);
+                openInformationDialog(map);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
 
-//        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -177,30 +182,13 @@ public class intActivity extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-//            List<Map<String, Object>> stagesRet = getSortedInterviews(uid);
-//            Log.d(TAG, "STAGESSSSSSSSS: " + Arrays.toString(stagesRet.toArray()) + "\n");
             List<Map<String, Object>> stages = (List<Map<String, Object>>) map.get("stages");
 
-//            Map<String, Object> m1 = new HashMap<>();
-//            Map<String, Object> m2 = new HashMap<>();
-//            m1.put("datetime", "May 4 7:15");
-//            m1.put("notes", "Study linked lists and hashmaps");
-//            m1.put("location", "");
-//            m1.put("stage", "Phone");
-//            m1.put("type", "Technical");
-//            m2.put("datetime", "May 8 1:15");
-//            m2.put("notes", "Study dynamic programming");
-//            m2.put("stage", "Onsite");
-//            m2.put("location", "1 Hacker Way, Menlo Park, CA 94025");
-//            m2.put("type", "Behavioral");
-//            stages.add(m1);
-//            stages.add(m2);
 
             int ind = getArguments().getInt(ARG_SECTION_NUMBER);
 
             View rootView = inflater.inflate(R.layout.fragment_int, container, false);
             TextView textView = (TextView) rootView.findViewById(R.id.company);
-//            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
             String company = (String) map.get("companyName");
             textView.setText(company + " Stage " + ind);
 
@@ -255,5 +243,58 @@ public class intActivity extends AppCompatActivity {
             // Show 3 total pages.
             return numPages;
         }
+    }
+
+
+    protected void openInformationDialog(final Map<String, Object> map) {
+        intActivity.ViewDialog alert = new intActivity.ViewDialog();
+        alert.openInformation(intActivity.this, map);
+    }
+
+    public class ViewDialog {
+
+        private void openInformation(Activity activity, final Map<String, Object> interviewMap) {
+            final Dialog dialog = new Dialog(activity, R.style.Theme_AppCompat_Light_Dialog_Alert);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setCancelable(false);
+            dialog.setContentView(R.layout.company_information_dialog);
+
+            final String companyName = (String) interviewMap.get("companyName");
+            final String position = (String) interviewMap.get("position");
+            final String positionType = (String) interviewMap.get("positionType");
+            final String recruiterEmail = (String) interviewMap.get("recruiterEmail");
+            final String recruiterName = (String) interviewMap.get("recruiterName");
+            final String recruiterPhoneNumber = (String) interviewMap.get("recruiterPhoneNumber");
+
+            TextView companyNameTextView = dialog.findViewById(R.id.info_screen_company_name_displayed);
+            TextView positionTextView = dialog.findViewById(R.id.info_screen_position_displayed);
+            TextView positionTypeTextView = dialog.findViewById(R.id.info_screen_position_type_displayed);
+            TextView recruiterEmailTextView = dialog.findViewById(R.id.info_screen_recruiter_email_displayed);
+            TextView recruiterNameTextView = dialog.findViewById(R.id.info_screen_recruiter_name_displayed);
+            TextView recruiterPhoneNumberTextView = dialog.findViewById(R.id.info_screen_recruiter_phone_number_displayed);
+
+
+            companyNameTextView.setText(companyName);
+            positionTextView.setText(position);
+            positionTypeTextView.setText(positionType);
+            recruiterEmailTextView.setText(recruiterEmail);
+            recruiterNameTextView.setText(recruiterName);
+            recruiterPhoneNumberTextView.setText(recruiterPhoneNumber);
+
+
+
+            Button dialogButton = dialog.findViewById(R.id.btn_dialog);
+            dialogButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+
+            dialog.show();
+
+        }
+
     }
 }
