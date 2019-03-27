@@ -13,9 +13,4 @@
         app:showAsAction="ifRoom"
         android:title="Add">
     </item>
-    <!--<item-->
-        <!--android:id="@+id/action_settings"-->
-        <!--app:showAsAction="never"-->
-        <!--android:title="Settings">-->
-    <!--</item>-->
 </menu>

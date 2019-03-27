@@ -79,7 +79,7 @@ public class AddPositionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Map<String, Object> interviewInfo = loadFields();
-                mProgressDialog.setMessage("Adding company");
+                mProgressDialog.setMessage("Adding position");
                 mProgressDialog.show();
                 writeToFirestore(interviewInfo);
             }

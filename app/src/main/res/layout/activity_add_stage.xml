@@ -1,33 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".AddStageActivity">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fitsSystemWindows="true">
 
-    <android.support.design.widget.AppBarLayout
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:paddingTop="56dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+        <!--<android.support.design.widget.TextInputLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:backgroundTint="@color/colorPrimary"-->
+        <!--android:layout_marginBottom="8dp">-->
+        <!--<EditText android:id="@+id/input_notes"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:hint="Notes" />-->
+        <!--</android.support.design.widget.TextInputLayout>-->
 
-    </android.support.design.widget.AppBarLayout>
-
-    <include layout="@layout/content_add_stage" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
+        <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:layout_marginBottom="8dp">
+        <EditText android:id="@+id/input_stage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Stage" />
+        </android.support.design.widget.TextInputLayout>
 
-</android.support.design.widget.CoordinatorLayout>
+        <TextView android:id="@+id/input_types_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select All Interview Types" />
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:layout_marginBottom="8dp">
+            <CheckBox android:id="@+id/checkbox_behavioral"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Behavioral"
+            android:onClick="onCheckboxClicked"/>
+            <CheckBox android:id="@+id/checkbox_technical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Technical"
+            android:onClick="onCheckboxClicked"/>
+            <CheckBox android:id="@+id/checkbox_case_study"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Case Study"
+            android:onClick="onCheckboxClicked"/>
+        </LinearLayout>
+
+        <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:layout_marginBottom="8dp">
+        <EditText android:id="@+id/input_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Location" />
+        </android.support.design.widget.TextInputLayout>
+
+        <EditText
+        android:id="@+id/input_date"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:clickable="true"
+        android:focusable="false"
+        android:inputType="datetime"
+        android:hint="Date"/>
+
+        <TimePicker
+        android:id="@+id/input_time_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+        <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:layout_marginBottom="2dp">
+        <EditText android:id="@+id/input_notes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:lines="8"
+        android:minLines="6"
+        android:maxLines="10"
+        android:scrollbars="vertical"
+        android:hint="Notes" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_add_stage"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="24dp"
+            android:padding="12dp"
+            android:text="Add Stage"
+            tools:enabled="true" />
+
+    </LinearLayout>x
+</ScrollView>
