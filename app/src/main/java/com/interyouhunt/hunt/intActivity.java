@@ -5,9 +5,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -16,7 +13,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,29 +20,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 
 import android.view.Window;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -94,9 +77,9 @@ public class intActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
 
-        Bundle bundle1 = this.getIntent().getExtras();
-        if(bundle1 != null) {
-            map  = (HashMap<String, Object>) bundle1.getSerializable("interviewMap");
+        Bundle bundle = this.getIntent().getExtras();
+        if(bundle != null) {
+            map  = (HashMap<String, Object>) bundle.getSerializable("interviewMap");
         }
         List<Map<String, Object>> stages = (List<Map<String, Object>>) map.get("stages");
         numPages = stages.size();
@@ -293,5 +276,14 @@ public class intActivity extends AppCompatActivity {
 
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(intActivity.this, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
     }
 }

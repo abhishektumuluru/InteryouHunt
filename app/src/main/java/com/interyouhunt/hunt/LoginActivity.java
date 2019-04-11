@@ -69,6 +69,7 @@ public class LoginActivity extends AppCompatActivity {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
+                mProgressDialog.dismiss();
                 if (!task.isSuccessful()) {
                     Toast.makeText(LoginActivity.this, "There was a problem signing in.", Toast.LENGTH_LONG).show();
                 } else {

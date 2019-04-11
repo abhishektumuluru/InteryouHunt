@@ -18,6 +18,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Arrays;
@@ -29,6 +30,9 @@ public class AddPositionActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private Button addPositionButton;
+    private boolean isEditing;
+
+    private HashMap<String, Object> data;
 
     private ProgressDialog mProgressDialog;
 
@@ -75,13 +79,16 @@ public class AddPositionActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            HashMap<String, Object> data = (HashMap<String, Object>) extras.getSerializable("interviewMap");
-            preFillFields(data);
+            data = (HashMap<String, Object>) extras.getSerializable("interviewMap");
+            preFillFields();
+            isEditing = true;
             addPositionButton.setText("Edit Position");
+        } else {
+            isEditing = false;
         }
     }
 
-    private void preFillFields(HashMap<String, Object> data) {
+    private void preFillFields() {
         final String companyNameData = (String) data.get("companyName");
         final String positionData = (String) data.get("position");
         final String positionTypeData = (String) data.get("positionType");
@@ -111,23 +118,59 @@ public class AddPositionActivity extends AppCompatActivity {
     }
 
 
-    private void writeToFirestore(Map<String, Object> interviewInfo) {
+    private void writeToFirestore(final Map<String, Object> interviewInfo) {
+        System.out.println("TESTINGTESTING");
         FirebaseUser user = mAuth.getCurrentUser();
         final String TAG = "AddPositionActivity";
         String uid = user.getUid();
-
-        db.collection("users").document(uid).collection("Interviews").document().set(interviewInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
+        DocumentReference doc;
+        final String successMessage;
+        final String failureMessage;
+        if (isEditing) {
+            successMessage = "Edited position";
+            failureMessage = "Error editing position";
+            String docID = (String) data.get("docID");
+            doc = db.collection("users").document(uid).collection("Interviews").document(docID);
+            interviewInfo.put("stages", data.get("stages"));
+        } else {
+            successMessage = "Added position";
+            failureMessage = "Error adding position";
+            doc = db.collection("users").document(uid).collection("Interviews").document();
+        }
+        doc.set(interviewInfo).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
+                mProgressDialog.dismiss();
                 Log.d(TAG, "DocumentSnapshot successfully written!");
-                Toast.makeText(AddPositionActivity.this, "Added company", Toast.LENGTH_LONG).show();
-                AddPositionActivity.this.startActivity(new Intent(AddPositionActivity.this, HomeActivity.class));
+                Toast.makeText(AddPositionActivity.this, successMessage, Toast.LENGTH_LONG).show();
+                Bundle extras = new Bundle();
+                if (isEditing) {
+                    data.put("companyName", interviewInfo.get("companyName"));
+                    data.put("position", interviewInfo.get("position"));
+                    data.put("positionType", interviewInfo.get("positionType"));
+                    data.put("recruiterEmail", interviewInfo.get("recruiterEmail"));
+                    data.put("recruiterName", interviewInfo.get("recruiterName"));
+                    data.put("recruiterPhoneNumber", interviewInfo.get("recruiterPhoneNumber"));
+                    Intent intent = new Intent(AddPositionActivity.this, intActivity.class);
+                    extras.putSerializable("interviewMap", data);
+                    extras.putString("toastSuccessMessage", successMessage);
+                    intent.putExtras(extras);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Intent intent = new Intent(AddPositionActivity.this, HomeActivity.class);
+                    extras.putString("toastSuccessMessage", successMessage);
+                    intent.putExtras(extras);
+                    startActivity(intent);
+                    finish();
+                }
             }
         })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error writing document", e);
+                        Log.w(TAG, failureMessage, e);
+                        mProgressDialog.dismiss();
                     }
                 });
     }
@@ -141,7 +184,7 @@ public class AddPositionActivity extends AppCompatActivity {
         {}
         @Override
         public void afterTextChanged(Editable s) {
-            if (companyName.getText().toString().length() == 0 || position.getText().toString().length() == 0 ) {
+            if (companyName.getText().toString().length() == 0 || position.getText().toString().length() == 0) {
                 addPositionButton.setEnabled(false);
             } else {
                 addPositionButton.setEnabled(true);

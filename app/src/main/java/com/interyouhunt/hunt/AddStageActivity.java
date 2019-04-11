@@ -26,7 +26,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -172,6 +171,7 @@ public class AddStageActivity extends AppCompatActivity {
         ).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
+                mProgressDialog.dismiss();
                 Log.d(TAG, "DocumentSnapshot successfully written!");
                 Toast.makeText(AddStageActivity.this, "Added new stage", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(AddStageActivity.this, intActivity.class);
@@ -184,6 +184,7 @@ public class AddStageActivity extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+                        mProgressDialog.dismiss();
                         Log.w(TAG, "Error writing document", e);
                     }
                 });
