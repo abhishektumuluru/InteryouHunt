@@ -70,13 +70,12 @@ public class AddStageActivity extends AppCompatActivity {
 
         Bundle bundle = this.getIntent().getExtras();
         if(bundle != null) {
-            map  = (HashMap<String, Object>) bundle.getSerializable("interviewMap");
+            map = (HashMap<String, Object>) bundle.getSerializable("interviewMap");
         }
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         addStageButton = findViewById(R.id.btn_add_stage);
-//        addStageButton.setEnabled(false);
 
         mProgressDialog = new ProgressDialog(this);
 

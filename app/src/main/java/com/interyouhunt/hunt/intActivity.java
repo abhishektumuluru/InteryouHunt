@@ -111,15 +111,6 @@ public class intActivity extends AppCompatActivity {
             Log.d(TAG, "MAP: " + key + "  " + value);
         }
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
-
     }
 
     @Override
@@ -135,12 +126,18 @@ public class intActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
+        Intent intent;
+        Bundle extras = new Bundle();
         // Handle item selection
         switch (id) {
             case R.id.action_add:
-                Intent intent = new Intent(intActivity.this, AddStageActivity.class);
-                Bundle extras = new Bundle();
+                intent = new Intent(intActivity.this, AddStageActivity.class);
+                extras.putSerializable("interviewMap", map);
+                intent.putExtras(extras);
+                startActivity(intent);
+                return true;
+            case R.id.action_edit:
+                intent = new Intent(intActivity.this, AddPositionActivity.class);
                 extras.putSerializable("interviewMap", map);
                 intent.putExtras(extras);
                 startActivity(intent);

@@ -13,7 +13,6 @@
         android:paddingLeft="24dp"
         android:paddingRight="24dp">
 
-
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -86,101 +85,6 @@
                 android:hint="Recruiter phone" />
         </android.support.design.widget.TextInputLayout>
 
-        <!--<android.support.design.widget.TextInputLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--android:backgroundTint="@color/colorPrimary"-->
-            <!--android:layout_marginBottom="8dp">-->
-            <!--<EditText android:id="@+id/input_passed"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:hint="Passed?" />-->
-        <!--</android.support.design.widget.TextInputLayout>-->
-
-        <!--<android.support.design.widget.TextInputLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--android:backgroundTint="@color/colorPrimary"-->
-            <!--android:layout_marginBottom="8dp">-->
-            <!--<EditText android:id="@+id/input_feedback"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:hint="Feedback" />-->
-        <!--</android.support.design.widget.TextInputLayout>-->
-
-        <!--<android.support.design.widget.TextInputLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--android:backgroundTint="@color/colorPrimary"-->
-            <!--android:layout_marginBottom="8dp">-->
-            <!--<EditText android:id="@+id/input_stage"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:hint="Stage" />-->
-        <!--</android.support.design.widget.TextInputLayout>-->
-
-        <!--<android.support.design.widget.TextInputLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--android:backgroundTint="@color/colorPrimary"-->
-            <!--android:layout_marginBottom="8dp">-->
-            <!--<EditText android:id="@+id/input_interview_type"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:hint="Interview type" />-->
-        <!--</android.support.design.widget.TextInputLayout>-->
-
-        <!--<android.support.design.widget.TextInputLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--android:backgroundTint="@color/colorPrimary"-->
-            <!--android:layout_marginBottom="8dp">-->
-            <!--<EditText android:id="@+id/input_location"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:hint="Location (optional)" />-->
-        <!--</android.support.design.widget.TextInputLayout>-->
-
-
-
-        <!--<EditText-->
-            <!--android:id="@+id/input_date"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:clickable="true"-->
-            <!--android:focusable="false"-->
-            <!--android:inputType="datetime"-->
-            <!--android:hint="Date"/>-->
-
-        <!--<TimePicker-->
-            <!--android:id="@+id/input_time_picker"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content" />-->
-
-
-        <!--<android.support.design.widget.TextInputLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--android:backgroundTint="@color/colorPrimary"-->
-            <!--android:layout_marginBottom="8dp">-->
-            <!--<EditText android:id="@+id/input_notes"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:inputType="textMultiLine"-->
-                <!--android:lines="8"-->
-                <!--android:minLines="6"-->
-                <!--android:maxLines="10"-->
-                <!--android:scrollbars="vertical"-->
-                <!--android:hint="Notes" />-->
-        <!--</android.support.design.widget.TextInputLayout>-->
-
-
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_add_position"
             android:layout_width="fill_parent"
@@ -191,5 +95,5 @@
             android:text="Add position"
             tools:enabled="false" />
 
-    </LinearLayout>x
+    </LinearLayout>
 </ScrollView>

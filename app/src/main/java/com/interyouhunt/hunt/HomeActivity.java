@@ -85,7 +85,6 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
                     String str = interview.get("companyName") + ", " + interview.get("position");
                     interviews.add(str);
                 }
-//                String[] values = interviews.toArray(new String[interviews.size()]);
 
                 // Get SwipeMenuListView object from xml
                 swipeListView = (SwipeMenuListView) findViewById(R.id.swipe_list);
@@ -230,5 +229,9 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
 
     public interface GetInterviewsCallback {
         void onCallback(List<Map<String, Object>> value);
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 }

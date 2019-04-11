@@ -80,6 +80,7 @@ public class LoginActivity extends AppCompatActivity {
     }
     private void startHomeActivity() {
         this.startActivity(new Intent(this, HomeActivity.class));
+        finish();
     }
 
     private void startRegistrationActivity() {
