@@ -1,6 +1,8 @@
 package com.interyouhunt.hunt;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -10,9 +12,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 
+import com.baoyz.swipemenulistview.SwipeMenu;
+import com.baoyz.swipemenulistview.SwipeMenuCreator;
+import com.baoyz.swipemenulistview.SwipeMenuItem;
+import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -29,7 +36,10 @@ import java.util.Map;
 
 public class HomeActivity extends AppCompatActivity implements Serializable {
 
-    ListView listView;
+    SwipeMenuListView swipeListView;
+    ArrayAdapter<String> adapter;
+    List<String> interviews;
+    List<Map<String, Object>> interviewListData;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth mAuth;
     private static final String TAG = "HomeActivity";
@@ -68,17 +78,17 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
         getInterviews(uid, new GetInterviewsCallback() {
             @Override
             public void onCallback(final List<Map<String, Object>> data) {
-                List<String> interviews = new ArrayList<>();
+                interviewListData = data;
+                // Get Array values to show in ListView
+                interviews = new ArrayList<>();
                 for (Map<String, Object> interview: data) {
                     String str = interview.get("companyName") + ", " + interview.get("position");
                     interviews.add(str);
                 }
-                String[] values = interviews.toArray(new String[interviews.size()]);
+//                String[] values = interviews.toArray(new String[interviews.size()]);
 
-                // Defined Array values to show in ListView
-
-                // Get ListView object from xml
-                listView = (ListView) findViewById(R.id.list);
+                // Get SwipeMenuListView object from xml
+                swipeListView = (SwipeMenuListView) findViewById(R.id.swipe_list);
 
                 // Define a new Adapter
                 // First parameter - Context
@@ -86,35 +96,62 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
                 // Third parameter - ID of the TextView to which the data is written
                 // Forth - the Array of data
 
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(HomeActivity.this,
-                        android.R.layout.simple_list_item_1, android.R.id.text1, values);
+                adapter = new ArrayAdapter<String>(HomeActivity.this,
+                        android.R.layout.simple_list_item_1, android.R.id.text1, interviews);
 
+                // Assign adapter to SwipeMenuListView
+                swipeListView.setAdapter(adapter);
 
-                // Assign adapter to ListView
-                listView.setAdapter(adapter);
-
-
-                // ListView Item Click Listener
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                // SwipeMenuListView Item Click Listener
+                swipeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view,
                                             int position, long id) {
                         HashMap<String,Object> map = (HashMap<String, Object>) data.get(position);
-//                        for (String name: map.keySet()){
-//                            String key =name.toString();
-//                            String value = map.get(name).toString();
-//                            System.out.println(key + " " + value);
-//                            Log.d(TAG, "MAP: " + key + "  " + value);
-//                        }
                         Intent intent = new Intent(HomeActivity.this, intActivity.class);
                         Bundle extras = new Bundle();
                         extras.putSerializable("interviewMap", map);
                         intent.putExtras(extras);
                         startActivity(intent);
-
                     }
 
+                });
+
+                SwipeMenuCreator creator = new SwipeMenuCreator() {
+
+                    @Override
+                    public void create(SwipeMenu menu) {
+                        // create "delete" item
+                        SwipeMenuItem deleteItem = new SwipeMenuItem(
+                                getApplicationContext());
+                        // set item background
+                        deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
+                                0x3F, 0x25)));
+                        // set item width
+                        deleteItem.setWidth(170);
+                        // set a icon
+                        deleteItem.setIcon(R.drawable.ic_delete);
+                        // add to menu
+                        menu.addMenuItem(deleteItem);
+                    }
+                };
+
+                // set creator
+                swipeListView.setMenuCreator(creator);
+                swipeListView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                        switch (index) {
+                            case 0:
+                                // open
+                                Log.d(TAG, "Clicked item: " + index);
+                                removePosition(position);
+                                break;
+                        }
+                        // false : close the menu; true : not close the menu
+                        return false;
+                    }
                 });
             }
         });
@@ -145,6 +182,29 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
                 startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
             }
         });
+    }
+
+    private void removePosition(final int position) {
+        Map<String, Object> data = interviewListData.get(position);
+        final String docId = (String) data.get("docID");
+        db.collection("users").document(uid)
+                .collection("Interviews").document(docId)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "Document with id " + docId + " successfully deleted!");
+                        interviewListData.remove(position);
+                        interviews.remove(position);
+                        adapter.notifyDataSetChanged();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error deleting document with id " + docId, e);
+                    }
+                });
     }
 
     private void getInterviews(String uid, final GetInterviewsCallback callback) {
