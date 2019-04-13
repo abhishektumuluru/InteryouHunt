@@ -158,12 +158,12 @@ public class AddStageActivity extends AppCompatActivity {
     }
 
 
-    private void writeToFirestore(Map<String, Object> stageInfo) {
+    private void writeToFirestore(final Map<String, Object> stageInfo) {
         FirebaseUser user = mAuth.getCurrentUser();
         final String TAG = "AddStageActivity";
         String uid = user.getUid();
         String docID = (String) map.get("docID");
-        List<Map<String, Object>> stages = (List<Map<String, Object>>) map.get("stages");
+        final List<Map<String, Object>> stages = (List<Map<String, Object>>) map.get("stages");
         stages.add(stageInfo);
 
         db.collection("users").document(uid).collection("Interviews").document(docID).update(
@@ -184,6 +184,7 @@ public class AddStageActivity extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+                        stages.remove(stageInfo);
                         mProgressDialog.dismiss();
                         Log.w(TAG, "Error writing document", e);
                     }

@@ -1,10 +1,15 @@
 package com.interyouhunt.hunt;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -20,6 +25,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -29,34 +36,39 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class intActivity extends AppCompatActivity {
 
+    private static final String TAG = "IntActivity";
+
+
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
+     * {@link FragmentStatePagerAdapter} derivative, which will keep every
      * loaded fragment in memory. If this becomes too memory intensive, it
      * may be best to switch to a
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
-    private SectionsPagerAdapter mSectionsPagerAdapter;
+    private static SectionsPagerAdapter mSectionsPagerAdapter;
 
-    private static final String TAG = "IntActivity";
+
     /**
      * The {@link ViewPager} that will host the section contents.
      */
-    private ViewPager mViewPager;
+    private static ViewPager mViewPager;
+
     static HashMap<String, Object> map;
     static int numPages;
 
-
     static FirebaseFirestore db = FirebaseFirestore.getInstance();
-    FirebaseAuth mAuth;
+    static FirebaseAuth mAuth;
     static String uid;
 
     @Override
@@ -66,13 +78,7 @@ public class intActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
@@ -83,17 +89,17 @@ public class intActivity extends AppCompatActivity {
         }
         List<Map<String, Object>> stages = (List<Map<String, Object>>) map.get("stages");
         numPages = stages.size();
+        // Create the adapter that will return a fragment for each of the three
+        // primary sections of the activity.
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+
+        // Set up the ViewPager with the sections adapter.
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
         mSectionsPagerAdapter.notifyDataSetChanged();
         if (user != null) {
             uid = user.getUid();
         }
-        for (String name: map.keySet()){
-            String key =name.toString();
-            String value = map.get(name).toString();
-            System.out.println(key + " " + value);
-            Log.d(TAG, "MAP: " + key + "  " + value);
-        }
-
     }
 
     @Override
@@ -143,6 +149,15 @@ public class intActivity extends AppCompatActivity {
          * fragment.
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
+        private static final String ARG_STAGE_NUMBER = "stage_number";
+
+        public Activity activity;
+
+        @Override
+        public void onAttach(Activity activity){
+            super.onAttach(activity);
+            this.activity = activity;
+        }
 
         public PlaceholderFragment() {
         }
@@ -151,10 +166,11 @@ public class intActivity extends AppCompatActivity {
          * Returns a new instance of this fragment for the given section
          * number.
          */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
+        public static PlaceholderFragment newInstance(int sectionNumber, int stageNumber) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            args.putInt(ARG_STAGE_NUMBER, stageNumber);
             fragment.setArguments(args);
             return fragment;
         }
@@ -163,41 +179,113 @@ public class intActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             List<Map<String, Object>> stages = (List<Map<String, Object>>) map.get("stages");
-
-
+            int stageNum = getArguments().getInt(ARG_STAGE_NUMBER);
             int ind = getArguments().getInt(ARG_SECTION_NUMBER);
-
             View rootView = inflater.inflate(R.layout.fragment_int, container, false);
             TextView textView = (TextView) rootView.findViewById(R.id.company);
             String company = (String) map.get("companyName");
-            textView.setText(company + " Stage " + ind);
-
+            textView.setText(company + " Stage " + stageNum);
             TextView tv1 = (TextView) rootView.findViewById(R.id.dateTime);
+            TextView tv2 = (TextView) rootView.findViewById(R.id.userLocation);
+            TextView tv3 = (TextView) rootView.findViewById(R.id.roundType);
+            TextView tv4 = (TextView) rootView.findViewById(R.id.interviewType);
+            TextView tv5 = (TextView) rootView.findViewById(R.id.notesText);
+            Timestamp ts =  (Timestamp)(stages.get(ind).get("datetime"));
             String datetime = "N/A";
-            Timestamp ts =  (Timestamp)(stages.get(ind -1).get("datetime"));
             if (ts != null) {
                 datetime = ts.toDate().toString();
             }
             tv1.setText(datetime);
-
-            TextView tv2 = (TextView) rootView.findViewById(R.id.userLocation);
-            tv2.setText((String)(stages.get(ind -1).get("location")));
-
-            TextView tv3 = (TextView) rootView.findViewById(R.id.roundType);
-            tv3.setText((String)(stages.get(ind -1).get("stage")));
-
-            TextView tv4 = (TextView) rootView.findViewById(R.id.interviewType);
+            tv2.setText((String)(stages.get(ind).get("location")));
+            tv3.setText((String)(stages.get(ind).get("stage")));
             StringBuilder sbType = new StringBuilder();
-            for (String type: (List<String>) (stages.get(ind -1).get("type"))) {
+            for (String type: (List<String>) (stages.get(ind).get("type"))) {
                 sbType.append(type + "/");
             }
-            sbType.setLength(sbType.length() - 1);
+            if (sbType.length() > 0) {
+                sbType.setLength(sbType.length() - 1);
+            }
             tv4.setText(sbType.toString());
+            tv5.setText((String)(stages.get(ind).get("notes")));
 
-            TextView tv5 = (TextView) rootView.findViewById(R.id.notesText);
-            tv5.setText((String)(stages.get(ind -1).get("notes")));
+            Button editStageButton = rootView.findViewById(R.id.btn_edit_stage);
+            Button deleteStageButton = rootView.findViewById(R.id.btn_delete_stage);
 
+            editStageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), AddStageActivity.class);
+                    Bundle extras = new Bundle();
+                    extras.putSerializable("interviewMap", map);
+                    intent.putExtras(extras);
+                    startActivity(intent);
+                }
+            });
+
+            deleteStageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final AlertDialog diaBox = AskOption();
+
+                    //2. now setup to change color of the button
+                    diaBox.setOnShowListener( new DialogInterface.OnShowListener() {
+                        @Override
+                        public void onShow(DialogInterface arg0) {
+                            diaBox.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.argb(200,102, 205, 170));
+                        }
+                    });
+                    diaBox.show();
+                }
+            });
             return rootView;
+        }
+
+        private AlertDialog AskOption() {
+            AlertDialog myQuittingDialogBox = new AlertDialog.Builder(getActivity())
+            //set message, title, and icon
+                .setTitle("Delete Stage")
+                    .setMessage("Do you want to delete this stage?")
+                    .setNegativeButton("Delete", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            //your deleting code
+                            removeStageFromFirestore();
+                            dialog.dismiss();
+                        }
+                    })
+                    .setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .create();
+            return myQuittingDialogBox;
+        }
+
+        private void removeStageFromFirestore() {
+            FirebaseUser user = mAuth.getCurrentUser();
+            String uid = user.getUid();
+            String docID = (String) map.get("docID");
+            final int stageNum = mViewPager.getCurrentItem();
+            final ArrayList<Map<String, Object>> stages = (ArrayList<Map<String, Object>>) map.get("stages");
+            final ArrayList<Map<String, Object>> stagesClone = (ArrayList<Map<String, Object>>) stages.clone();
+            stagesClone.remove(stageNum);
+            db.collection("users").document(uid).collection("Interviews").document(docID).update(
+                    "stages", stagesClone
+            ).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    stages.remove(stageNum);
+                    mSectionsPagerAdapter.deletePage(stageNum);
+                    Log.d(TAG, "DocumentSnapshot successfully written!");
+                    Toast.makeText(activity, "Removed stage", Toast.LENGTH_LONG).show();
+                }
+            })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w(TAG, "Error removing stage", e);
+                        }
+                    });
         }
     }
 
@@ -205,23 +293,46 @@ public class intActivity extends AppCompatActivity {
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+    public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
+
+        private ArrayList<Integer> pageIndexes;
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
+            pageIndexes = new ArrayList<>();
+            for (int i = 0; i < numPages; i++) {
+                pageIndexes.add(new Integer(i));
+            }
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public int getCount() {
+            return pageIndexes.size();
         }
 
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            Integer stageNumber = pageIndexes.get(position) + 1;
+            return PlaceholderFragment.newInstance(position, stageNumber.intValue());
+
+        }
+        // This is called when notifyDataSetChanged() is called
+        @Override
+        public int getItemPosition(Object object) {
+            // refresh all fragments when data set changed
+            return PagerAdapter.POSITION_NONE;
         }
 
-        @Override
-        public int getCount() {
-            // Show 3 total pages.
-            return numPages;
+
+        // Delete a page at a `position`
+        public void deletePage(int position) {
+            // Remove the corresponding item in the data set
+            pageIndexes.remove(position);
+            // Notify the adapter that the data set is changed
+            notifyDataSetChanged();
         }
     }
 
@@ -254,15 +365,12 @@ public class intActivity extends AppCompatActivity {
             TextView recruiterNameTextView = dialog.findViewById(R.id.info_screen_recruiter_name_displayed);
             TextView recruiterPhoneNumberTextView = dialog.findViewById(R.id.info_screen_recruiter_phone_number_displayed);
 
-
             companyNameTextView.setText(companyName);
             positionTextView.setText(position);
             positionTypeTextView.setText(positionType);
             recruiterEmailTextView.setText(recruiterEmail);
             recruiterNameTextView.setText(recruiterName);
             recruiterPhoneNumberTextView.setText(recruiterPhoneNumber);
-
-
 
             Button dialogButton = dialog.findViewById(R.id.btn_dialog);
             dialogButton.setOnClickListener(new View.OnClickListener() {
@@ -273,9 +381,7 @@ public class intActivity extends AppCompatActivity {
             });
 
             dialog.show();
-
         }
-
     }
 
     @Override
