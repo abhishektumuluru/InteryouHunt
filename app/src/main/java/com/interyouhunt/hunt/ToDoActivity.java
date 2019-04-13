@@ -69,7 +69,9 @@ public class ToDoActivity extends AppCompatActivity {
                     for (String type: (List<String>) interview.get("type")) {
                         sbType.append(type + "/");
                     }
-                    sbType.setLength(sbType.length() - 1);
+                    if (sbType.length() > 0) {
+                        sbType.setLength(sbType.length() - 1);
+                    }
                     String datetime = "N/A";
                     Timestamp ts =  (Timestamp) interview.get("datetime");
                     if (ts != null) {
