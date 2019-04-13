@@ -180,7 +180,7 @@ public class intActivity extends AppCompatActivity {
                                  Bundle savedInstanceState) {
             List<Map<String, Object>> stages = (List<Map<String, Object>>) map.get("stages");
             int stageNum = getArguments().getInt(ARG_STAGE_NUMBER);
-            int ind = getArguments().getInt(ARG_SECTION_NUMBER);
+            final int ind = getArguments().getInt(ARG_SECTION_NUMBER);
             View rootView = inflater.inflate(R.layout.fragment_int, container, false);
             TextView textView = (TextView) rootView.findViewById(R.id.company);
             String company = (String) map.get("companyName");
@@ -217,6 +217,8 @@ public class intActivity extends AppCompatActivity {
                     Intent intent = new Intent(getActivity(), AddStageActivity.class);
                     Bundle extras = new Bundle();
                     extras.putSerializable("interviewMap", map);
+                    extras.putInt("stageNum", ind);
+                    extras.putBoolean("isEditing", true);
                     intent.putExtras(extras);
                     startActivity(intent);
                 }

@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -36,6 +37,7 @@ import java.util.Map;
 public class AddStageActivity extends AppCompatActivity {
 
     HashMap<String, Object> map;
+    private boolean isEditing;
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
@@ -66,11 +68,6 @@ public class AddStageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_stage);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        Bundle bundle = this.getIntent().getExtras();
-        if(bundle != null) {
-            map = (HashMap<String, Object>) bundle.getSerializable("interviewMap");
-        }
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
@@ -126,16 +123,68 @@ public class AddStageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Map<String, Object> stageInfo = loadFields();
-                mProgressDialog.setMessage("Adding Stage");
+                if (isEditing) {
+                    mProgressDialog.setMessage("Editing Stage");
+                } else {
+                    mProgressDialog.setMessage("Adding Stage");
+                }
                 mProgressDialog.show();
                 writeToFirestore(stageInfo);
             }
         });
 
+        Bundle bundle = this.getIntent().getExtras();
+        if(bundle != null) {
+            map = (HashMap<String, Object>) bundle.getSerializable("interviewMap");
+            if (bundle.getBoolean("isEditing") == true) {
+                isEditing = true;
+                addStageButton.setText("Edit Stage");
+                preFillFields();
+            } else {
+                isEditing = false;
+            }
+        }
+    }
+
+    private void preFillFields() {
+        Bundle bundle = this.getIntent().getExtras();
+        if (bundle == null) return;
+        int stageNum = bundle.getInt("stageNum");
+        final ArrayList<Map<String, Object>> stages = (ArrayList<Map<String, Object>>) map.get("stages");
+        Map<String, Object> stageMap = stages.get(stageNum);
+        List<String> typesData = (List<String>) stageMap.get("type");
+        Timestamp tsData =  (Timestamp)stageMap.get("datetime");
+        String locationData = (String) stageMap.get("location");
+        String notesData = (String) stageMap.get("notes");
+        String stageData = (String) stageMap.get("stage");
+        for (String type: typesData) {
+            switch (type) {
+                case "Behavioral":
+                    behavioralCheckBox.setChecked(true);
+                    isBehavioral = true;
+                    break;
+                case "Technical":
+                    techicalCheckBox.setChecked(true);
+                    isTechnical = true;
+                    break;
+                case "Case Study":
+                    caseStudyCheckBox.setChecked(true);
+                    isCaseStudy = true;
+                    break;
+            }
+        }
+        Date date = tsData.toDate();
+        myCalendar.setTime(date);
+        timePicker.setCurrentHour(myCalendar.get(Calendar.HOUR_OF_DAY));
+        updateLabel();
+        location.setText(locationData, TextView.BufferType.EDITABLE);
+        notes.setText(notesData, TextView.BufferType.EDITABLE);
+        stage.setText(stageData, TextView.BufferType.EDITABLE);
     }
 
     private Map<String, Object> loadFields() {
         List<String> types = new ArrayList<>();
+
         if (isBehavioral) {
             types.add("Behavioral");
         }
@@ -164,7 +213,20 @@ public class AddStageActivity extends AppCompatActivity {
         String uid = user.getUid();
         String docID = (String) map.get("docID");
         final List<Map<String, Object>> stages = (List<Map<String, Object>>) map.get("stages");
-        stages.add(stageInfo);
+        final String successMessage;
+        final String failureMessage;
+        if (isEditing) {
+            Bundle bundle = this.getIntent().getExtras();
+            if (bundle == null) return;
+            int stageNum = bundle.getInt("stageNum");
+            stages.set(stageNum, stageInfo);
+            successMessage = "Edited stage";
+            failureMessage = "Error editing stage";
+        } else {
+            stages.add(stageInfo);
+            successMessage = "Added stage";
+            failureMessage = "Error adding stage";
+        }
 
         db.collection("users").document(uid).collection("Interviews").document(docID).update(
                 "stages", stages
@@ -173,7 +235,7 @@ public class AddStageActivity extends AppCompatActivity {
             public void onSuccess(Void aVoid) {
                 mProgressDialog.dismiss();
                 Log.d(TAG, "DocumentSnapshot successfully written!");
-                Toast.makeText(AddStageActivity.this, "Added new stage", Toast.LENGTH_LONG).show();
+                Toast.makeText(AddStageActivity.this, successMessage, Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(AddStageActivity.this, intActivity.class);
                 Bundle extras = new Bundle();
                 extras.putSerializable("interviewMap", map);
@@ -184,9 +246,9 @@ public class AddStageActivity extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        stages.remove(stageInfo);
+                        if (!isEditing) stages.remove(stageInfo);
                         mProgressDialog.dismiss();
-                        Log.w(TAG, "Error writing document", e);
+                        Log.w(TAG, failureMessage, e);
                     }
                 });
     }
@@ -194,6 +256,10 @@ public class AddStageActivity extends AppCompatActivity {
     public void onCheckboxClicked(View view) {
         // Is the view now checked?
         boolean checked = ((CheckBox) view).isChecked();
+        System.out.println("BEFORE");
+        System.out.println("isBehavioral: " + isBehavioral);
+        System.out.println("isTechnical: " + isTechnical);
+        System.out.println("isCaseStudy: " + isCaseStudy);
 
         // Check which checkbox was clicked
         switch(view.getId()) {
@@ -203,19 +269,26 @@ public class AddStageActivity extends AppCompatActivity {
                 } else {
                     isBehavioral = false;
                 }
+                break;
             case R.id.checkbox_technical:
                 if (checked) {
                     isTechnical = true;
                 } else {
                     isTechnical = false;
                 }
+                break;
             case R.id.checkbox_case_study:
                 if (checked) {
                     isCaseStudy = true;
                 } else {
                     isCaseStudy = false;
                 }
+                break;
         }
+        System.out.println("AFTER");
+        System.out.println("isBehavioral: " + isBehavioral);
+        System.out.println("isTechnical: " + isTechnical);
+        System.out.println("isCaseStudy: " + isCaseStudy);
     }
 
     private void updateLabel() {
