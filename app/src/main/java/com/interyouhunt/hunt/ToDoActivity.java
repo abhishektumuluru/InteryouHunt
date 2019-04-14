@@ -6,10 +6,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -54,6 +56,27 @@ public class ToDoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_to_do);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        BottomNavigationView bottomNavigationView = (BottomNavigationView)
+                findViewById(R.id.navigation);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.homenav:
+                                startActivity(new Intent(ToDoActivity.this, HomeActivity.class));
+                                break;
+                            case R.id.todonav:
+                                startActivity(new Intent(ToDoActivity.this, ToDoActivity.class));
+                                break;
+                            case R.id.forumnav:
+                                startActivity(new Intent(ToDoActivity.this, ForumActivity.class));
+                        }
+                        return true;
+                    }
+                });
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
@@ -102,33 +125,6 @@ public class ToDoActivity extends AppCompatActivity {
 
                 // Assign adapter to ListView
                 listView.setAdapter(adapter);
-            }
-        });
-
-        Button home = findViewById(R.id.toHome);
-        home.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(ToDoActivity.this, HomeActivity.class));
-            }
-        });
-
-        Button toDo = findViewById(R.id.toDo);
-        toDo.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(ToDoActivity.this, ToDoActivity.class));
-            }
-        });
-
-        Button profile = findViewById(R.id.toProfile);
-        profile.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(ToDoActivity.this, ProfileActivity.class));
             }
         });
 

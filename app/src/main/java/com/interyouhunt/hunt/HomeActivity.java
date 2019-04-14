@@ -52,7 +52,6 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
     private static final String TAG = "HomeActivity";
     String uid;
     FloatingActionButton plusButton;
-    Button forumButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
