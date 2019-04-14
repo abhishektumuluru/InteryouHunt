@@ -251,6 +251,7 @@ public class AddStageActivity extends AppCompatActivity {
                         Log.w(TAG, failureMessage, e);
                     }
                 });
+
     }
 
     public void onCheckboxClicked(View view) {
