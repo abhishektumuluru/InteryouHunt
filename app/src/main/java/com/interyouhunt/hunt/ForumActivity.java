@@ -152,7 +152,6 @@ public class ForumActivity extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         // Start a new activity or open up a new fragment with the post in it
-                        Toast.makeText(ForumActivity.this, "Opening", Toast.LENGTH_SHORT).show();
                         openPost(titles[position], descriptions[position], companies[position], positions[position], interviewTypes[position]);
                     }
                 });
