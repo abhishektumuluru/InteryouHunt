@@ -27,6 +27,8 @@ import java.util.Map;
 
 public class AddPositionActivity extends AppCompatActivity {
 
+    private final String TAG = "AddPositionActivity";
+
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private Button addPositionButton;
@@ -119,9 +121,7 @@ public class AddPositionActivity extends AppCompatActivity {
 
 
     private void writeToFirestore(final Map<String, Object> interviewInfo) {
-        System.out.println("TESTINGTESTING");
         FirebaseUser user = mAuth.getCurrentUser();
-        final String TAG = "AddPositionActivity";
         String uid = user.getUid();
         DocumentReference doc;
         final String successMessage;
