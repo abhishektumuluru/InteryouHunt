@@ -58,9 +58,16 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         mAuth = FirebaseAuth.getInstance();
+        Bundle bundle = this.getIntent().getExtras();
 
-        BottomNavigationView bottomNavigationView = (BottomNavigationView)
+        final BottomNavigationView bottomNavigationView = (BottomNavigationView)
                 findViewById(R.id.navigation);
+
+
+        if(bundle != null){
+            int nav_id = bundle.getInt("nav_id");
+            bottomNavigationView.setSelectedItemId(nav_id);
+        }
 
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -68,13 +75,28 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.homenav:
-                                startActivity(new Intent(HomeActivity.this, HomeActivity.class));
+                                int value1= R.id.homenav;
+                                Intent i1 = new Intent(HomeActivity.this, HomeActivity.class);
+                                Bundle b1 = new Bundle();
+                                b1.putInt("nav_id", value1);
+                                i1.putExtras(b1);
+                                startActivity(i1);
                                 break;
                             case R.id.todonav:
-                                startActivity(new Intent(HomeActivity.this, ToDoActivity.class));
+                                int value2= R.id.todonav;
+                                Intent i2 = new Intent(HomeActivity.this, ToDoActivity.class);
+                                Bundle b2 = new Bundle();
+                                b2.putInt("nav_id", value2);
+                                i2.putExtras(b2);
+                                startActivity(i2);
                                 break;
                             case R.id.forumnav:
-                                startActivity(new Intent(HomeActivity.this, ForumActivity.class));
+                                int value3= R.id.forumnav;
+                                Intent i3 = new Intent(HomeActivity.this, ForumActivity.class);
+                                Bundle b3 = new Bundle();
+                                b3.putInt("nav_id", value3);
+                                i3.putExtras(b3);
+                                startActivity(i3);
                                 break;
                         }
                         return true;
