@@ -7,10 +7,12 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -58,14 +60,26 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
         setContentView(R.layout.activity_home);
         mAuth = FirebaseAuth.getInstance();
 
-        forumButton = findViewById(R.id.toForum);
-        forumButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(HomeActivity.this, ForumActivity.class);
-                startActivity(i);
-            }
-        });
+        BottomNavigationView bottomNavigationView = (BottomNavigationView)
+                findViewById(R.id.navigation);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.homenav:
+                                startActivity(new Intent(HomeActivity.this, HomeActivity.class));
+                                break;
+                            case R.id.todonav:
+                                startActivity(new Intent(HomeActivity.this, ToDoActivity.class));
+                                break;
+                            case R.id.forumnav:
+                                startActivity(new Intent(HomeActivity.this, ForumActivity.class));
+                        }
+                        return true;
+                    }
+                });
 
 
         plusButton = findViewById(R.id.btn_plus);
@@ -183,33 +197,6 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
                         sendRegistrationToServer(token);
                     }
                 });
-
-        Button home = findViewById(R.id.toHome);
-        home.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(HomeActivity.this, HomeActivity.class));
-            }
-        });
-
-        Button toDo = findViewById(R.id.toDo);
-        toDo.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(HomeActivity.this, ToDoActivity.class));
-            }
-        });
-
-        Button profile = findViewById(R.id.toProfile);
-        profile.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
-            }
-        });
     }
 
     private void sendRegistrationToServer(String token) {

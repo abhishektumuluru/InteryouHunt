@@ -6,10 +6,7 @@
     <item android:id="@+id/todonav"
         android:title="To-Do"
         android:icon="@drawable/pinterestlogo" />
-    <item android:id="@+id/profilenav"
-        android:title="Profile"
-        android:icon="@drawable/pinterestlogo" />
-    <!--<item android:id="@+id/forumnav"-->
-    <!--android:title="Forum"-->
-    <!--android:icon="@drawable/snaplogo" />-->
+    <item android:id="@+id/forumnav"
+    android:title="Forum"
+    android:icon="@drawable/snaplogo" />
 </menu>
