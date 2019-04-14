@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    xmlns:numberpicker="http://schemas.android.com/apk/res-auto"
     android:fitsSystemWindows="true">
 
     <LinearLayout
@@ -12,18 +13,6 @@
         android:paddingTop="56dp"
         android:paddingLeft="24dp"
         android:paddingRight="24dp">
-
-        <!--<android.support.design.widget.TextInputLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="8dp"-->
-        <!--android:backgroundTint="@color/colorPrimary"-->
-        <!--android:layout_marginBottom="8dp">-->
-        <!--<EditText android:id="@+id/input_notes"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:hint="Notes" />-->
-        <!--</android.support.design.widget.TextInputLayout>-->
 
         <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
@@ -37,10 +26,29 @@
         android:hint="Stage" />
         </android.support.design.widget.TextInputLayout>
 
+        <TextView android:id="@+id/input_stage_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Select Stage Number" />
+
+        <com.travijuu.numberpicker.library.NumberPicker
+            android:id="@+id/stage_number_picker"
+            android:layout_width="130dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            numberpicker:min="1"
+            numberpicker:max="10"
+            numberpicker:value="1"
+            numberpicker:unit="1"
+            numberpicker:focusable="false" />
+
         <TextView android:id="@+id/input_types_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:text="Select All Interview Types" />
+
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

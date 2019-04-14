@@ -173,11 +173,10 @@ public class intActivity extends AppCompatActivity {
          * Returns a new instance of this fragment for the given section
          * number.
          */
-        public static PlaceholderFragment newInstance(int sectionNumber, int stageNumber) {
+        public static PlaceholderFragment newInstance(int sectionNumber) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            args.putInt(ARG_STAGE_NUMBER, stageNumber);
             fragment.setArguments(args);
             return fragment;
         }
@@ -185,35 +184,36 @@ public class intActivity extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            List<Map<String, Object>> stages = (List<Map<String, Object>>) map.get("stages");
-            int stageNum = getArguments().getInt(ARG_STAGE_NUMBER);
             final int ind = getArguments().getInt(ARG_SECTION_NUMBER);
+            List<Map<String, Object>> stages = (List<Map<String, Object>>) map.get("stages");
+            Map<String, Object> stage = stages.get(ind);
             View rootView = inflater.inflate(R.layout.fragment_int, container, false);
             TextView textView = (TextView) rootView.findViewById(R.id.company);
             String company = (String) map.get("companyName");
+            Long stageNum = (Long) stage.get("stageNum");
             textView.setText(company + " Stage " + stageNum);
             TextView tv1 = (TextView) rootView.findViewById(R.id.dateTime);
             TextView tv2 = (TextView) rootView.findViewById(R.id.userLocation);
             TextView tv3 = (TextView) rootView.findViewById(R.id.roundType);
             TextView tv4 = (TextView) rootView.findViewById(R.id.interviewType);
             TextView tv5 = (TextView) rootView.findViewById(R.id.notesText);
-            Timestamp ts =  (Timestamp)(stages.get(ind).get("datetime"));
+            Timestamp ts =  (Timestamp)(stage.get("datetime"));
             String datetime = "N/A";
             if (ts != null) {
                 datetime = ts.toDate().toString();
             }
             tv1.setText(datetime);
-            tv2.setText((String)(stages.get(ind).get("location")));
-            tv3.setText((String)(stages.get(ind).get("stage")));
+            tv2.setText((String)(stage.get("location")));
+            tv3.setText((String)(stage.get("stage")));
             StringBuilder sbType = new StringBuilder();
-            for (String type: (List<String>) (stages.get(ind).get("type"))) {
+            for (String type: (List<String>) (stage.get("type"))) {
                 sbType.append(type + "/");
             }
             if (sbType.length() > 0) {
                 sbType.setLength(sbType.length() - 1);
             }
             tv4.setText(sbType.toString());
-            tv5.setText((String)(stages.get(ind).get("notes")));
+            tv5.setText((String)(stage.get("notes")));
 
             Button editStageButton = rootView.findViewById(R.id.btn_edit_stage);
             Button deleteStageButton = rootView.findViewById(R.id.btn_delete_stage);
@@ -325,8 +325,7 @@ public class intActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            Integer stageNumber = pageIndexes.get(position) + 1;
-            return PlaceholderFragment.newInstance(position, stageNumber.intValue());
+            return PlaceholderFragment.newInstance(position);
 
         }
         // This is called when notifyDataSetChanged() is called
