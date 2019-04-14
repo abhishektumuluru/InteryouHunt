@@ -1,5 +1,6 @@
 package com.interyouhunt.hunt;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -17,6 +19,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+import com.travijuu.numberpicker.library.NumberPicker;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -28,6 +31,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -55,6 +60,7 @@ public class AddStageActivity extends AppCompatActivity {
     private EditText notes;
     private EditText location;
     private EditText stage;
+    private NumberPicker stageNumberPicker;
     private CheckBox behavioralCheckBox;
     private CheckBox techicalCheckBox;
     private CheckBox caseStudyCheckBox;
@@ -76,6 +82,8 @@ public class AddStageActivity extends AppCompatActivity {
         mProgressDialog = new ProgressDialog(this);
 
         stage = findViewById(R.id.input_stage);
+        stageNumberPicker = findViewById(R.id.stage_number_picker);
+
         notes = findViewById(R.id.input_notes);
         location = findViewById(R.id.input_location);
         behavioralCheckBox = findViewById(R.id.checkbox_behavioral);
@@ -88,6 +96,42 @@ public class AddStageActivity extends AppCompatActivity {
         timePicker = findViewById(R.id.input_time_picker);
         dateEditText = findViewById(R.id.input_date);
         myCalendar = Calendar.getInstance();
+
+        stage.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
+
+        location.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
+
+        dateEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
+
+        notes.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
 
         timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override
@@ -157,6 +201,7 @@ public class AddStageActivity extends AppCompatActivity {
         String locationData = (String) stageMap.get("location");
         String notesData = (String) stageMap.get("notes");
         String stageData = (String) stageMap.get("stage");
+        Long stageNumData = (Long) stageMap.get("stageNum");
         for (String type: typesData) {
             switch (type) {
                 case "Behavioral":
@@ -180,6 +225,7 @@ public class AddStageActivity extends AppCompatActivity {
         location.setText(locationData, TextView.BufferType.EDITABLE);
         notes.setText(notesData, TextView.BufferType.EDITABLE);
         stage.setText(stageData, TextView.BufferType.EDITABLE);
+        stageNumberPicker.setValue(stageNumData.intValue());
     }
 
     private Map<String, Object> loadFields() {
@@ -195,7 +241,7 @@ public class AddStageActivity extends AppCompatActivity {
             types.add("Case Study");
         }
         datetime = new Timestamp(new Date(myCalendar.getTimeInMillis()));
-
+        Long stageNum = Long.valueOf(stageNumberPicker.getValue());
         // end info to store
         Map<String, Object> stageInfo = new HashMap<>();
         stageInfo.put("stage", stage.getText().toString());
@@ -203,6 +249,7 @@ public class AddStageActivity extends AppCompatActivity {
         stageInfo.put("location", location.getText().toString());
         stageInfo.put("datetime", datetime);
         stageInfo.put("notes", notes.getText().toString());
+        stageInfo.put("stageNum", stageNum);
         return stageInfo;
     }
 
@@ -227,6 +274,16 @@ public class AddStageActivity extends AppCompatActivity {
             successMessage = "Added stage";
             failureMessage = "Error adding stage";
         }
+
+        Collections.sort(stages, new Comparator<Map<String, Object>>() {
+            @Override
+            public int compare(Map<String, Object> stage1, Map<String, Object> stage2) {
+                Long stageNum1 = (Long) stage1.get("stageNum");
+                Long stageNum2 = (Long) stage2.get("stageNum");
+                Long res = stageNum1 - stageNum2;
+                return res.intValue();
+            }
+        });
 
         db.collection("users").document(uid).collection("Interviews").document(docID).update(
                 "stages", stages
@@ -296,5 +353,10 @@ public class AddStageActivity extends AppCompatActivity {
         String myFormat = "MM/dd/yy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         dateEditText.setText(sdf.format(myCalendar.getTime()));
+    }
+
+    public void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }

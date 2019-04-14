@@ -1,5 +1,6 @@
 package com.interyouhunt.hunt;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -9,8 +10,11 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,7 +45,7 @@ public class AddPositionActivity extends AppCompatActivity {
     // Info to store
     private EditText companyName;
     private EditText position;
-    private EditText positionType;
+    private RadioGroup positionTypes;
     private EditText recruiterEmail;
     private EditText recruiterName;
     private EditText recruiterPhoneNumber;
@@ -61,13 +65,58 @@ public class AddPositionActivity extends AppCompatActivity {
 
         companyName = findViewById(R.id.input_company);
         position = findViewById(R.id.input_position);
-        positionType = findViewById(R.id.input_position_type);
+        positionTypes = findViewById(R.id.radio_group_position_types);
         recruiterEmail = findViewById(R.id.input_recruiter_email);
         recruiterName = findViewById(R.id.input_recruiter_name);
         recruiterPhoneNumber = findViewById(R.id.input_recruiter_phone);
 
         companyName.addTextChangedListener(watcher);
         position.addTextChangedListener(watcher);
+
+        companyName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
+
+        position.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
+
+        recruiterName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
+
+        recruiterEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
+
+        recruiterPhoneNumber.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
 
         addPositionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,19 +148,27 @@ public class AddPositionActivity extends AppCompatActivity {
         final String recruiterPhoneNumberData = (String) data.get("recruiterPhoneNumber");
         companyName.setText(companyNameData, TextView.BufferType.EDITABLE);
         position.setText(positionData, TextView.BufferType.EDITABLE);
-        positionType.setText(positionTypeData, TextView.BufferType.EDITABLE);
         recruiterEmail.setText(recruiterEmailData, TextView.BufferType.EDITABLE);
         recruiterName.setText(recruiterNameData, TextView.BufferType.EDITABLE);
         recruiterPhoneNumber.setText(recruiterPhoneNumberData, TextView.BufferType.EDITABLE);
+        switch (positionTypeData) {
+            case "Internship":
+                positionTypes.check(R.id.radio_intern);
+            case "Full Time":
+                positionTypes.check(R.id.radio_full_time);
+            case "Co-op":
+                positionTypes.check(R.id.radio_coop);
+        }
     }
 
     private Map<String, Object> loadFields() {
 
         // end info to store
         Map<String, Object> interviewInfo = new HashMap<>();
+        RadioButton positionTypeRadio = findViewById(positionTypes.getCheckedRadioButtonId());
         interviewInfo.put("companyName", companyName.getText().toString());
         interviewInfo.put("position", position.getText().toString());
-        interviewInfo.put("positionType", positionType.getText().toString());
+        interviewInfo.put("positionType", positionTypeRadio.getText().toString());
         interviewInfo.put("recruiterEmail", recruiterEmail.getText().toString());
         interviewInfo.put("recruiterName", recruiterName.getText().toString());
         interviewInfo.put("recruiterPhoneNumber", recruiterPhoneNumber.getText().toString());
@@ -191,4 +248,9 @@ public class AddPositionActivity extends AppCompatActivity {
             }
         }
     };
+
+    public void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
 }

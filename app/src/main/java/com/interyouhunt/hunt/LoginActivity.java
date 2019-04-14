@@ -1,14 +1,22 @@
 package com.interyouhunt.hunt;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Spannable;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -20,6 +28,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText emailField;
     private EditText passwordField;
+    private TextView signupLink;
     private Button loginButton;
     private FirebaseAuth mAuth;
     private ProgressDialog mProgressDialog;
@@ -37,7 +46,39 @@ public class LoginActivity extends AppCompatActivity {
         emailField = findViewById(R.id.input_email);
         passwordField = findViewById(R.id.input_password);
         loginButton = findViewById(R.id.btn_login);
+        signupLink = findViewById(R.id.link_signup);
         mAuth = FirebaseAuth.getInstance();
+
+        emailField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
+
+        passwordField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
+
+        signupLink.setMovementMethod(LinkMovementMethod.getInstance());
+        Spannable spans = (Spannable) signupLink.getText();
+        ClickableSpan clickSpan = new ClickableSpan() {
+
+            @Override
+            public void onClick(View widget)
+            {
+                Intent intent = new Intent(LoginActivity.this, RegistrationActivity.class);
+                startActivity(intent);
+            }
+        };
+        spans.setSpan(clickSpan, 16, spans.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,5 +128,10 @@ public class LoginActivity extends AppCompatActivity {
     private void startRegistrationActivity() {
         this.startActivity(new Intent(this, RegistrationActivity.class));
 
+    }
+
+    public void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }
