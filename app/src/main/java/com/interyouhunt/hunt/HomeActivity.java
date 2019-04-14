@@ -1,8 +1,11 @@
 package com.interyouhunt.hunt;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +30,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -87,7 +92,7 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
                 }
 
                 // Get SwipeMenuListView object from xml
-                swipeListView = (SwipeMenuListView) findViewById(R.id.swipe_list);
+                swipeListView = findViewById(R.id.swipe_list);
 
                 // Define a new Adapter
                 // First parameter - Context
@@ -155,6 +160,30 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
             }
         });
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel notifChannel = new NotificationChannel("Hunt", "Hunt",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            notifChannel.setDescription("Hunt");
+            NotificationManager notifMgr = getSystemService(NotificationManager.class);
+            notifMgr.createNotificationChannel(notifChannel);
+        }
+
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+                        Log.d(TAG, "Token: " + token);
+                        sendRegistrationToServer(token);
+                    }
+                });
+
         Button home = findViewById(R.id.toHome);
         home.setOnClickListener(new View.OnClickListener() {
 
@@ -181,6 +210,14 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
                 startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
             }
         });
+    }
+
+    private void sendRegistrationToServer(String token) {
+        HashMap<String, String> fmcToken = new HashMap<>();
+        fmcToken.put("FMCToken", token);
+        DocumentReference doc = db.collection("users")
+                .document(uid);
+        doc.set(fmcToken);
     }
 
     private void removePosition(final int position) {
@@ -234,4 +271,5 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
     @Override
     public void onBackPressed() {
     }
+
 }
