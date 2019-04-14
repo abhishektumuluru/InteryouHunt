@@ -50,30 +50,84 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Select All Interview Types" />
+            android:text="Select All Stage Types" />
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:backgroundTint="@color/colorPrimary"
-        android:layout_marginBottom="8dp">
-            <CheckBox android:id="@+id/checkbox_behavioral"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Behavioral"
-            android:onClick="onCheckboxClicked"/>
-            <CheckBox android:id="@+id/checkbox_technical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Technical"
-            android:onClick="onCheckboxClicked"/>
-            <CheckBox android:id="@+id/checkbox_case_study"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Case Study"
-            android:onClick="onCheckboxClicked"/>
-        </LinearLayout>
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/my_spinner"
+            android:dropDownWidth="match_parent">
+        </Spinner>
+
+        <!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:gravity="center"-->
+        <!--android:backgroundTint="@color/colorPrimary"-->
+        <!--android:layout_marginBottom="8dp">-->
+            <!--<CheckBox android:id="@+id/checkbox_behavioral"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Behavioral"-->
+                <!--android:onClick="onCheckboxClicked"/>-->
+            <!--<CheckBox android:id="@+id/checkbox_technical"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Technical"-->
+                <!--android:onClick="onCheckboxClicked"/>-->
+            <!--<CheckBox android:id="@+id/checkbox_case_study"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Case Study"-->
+                <!--android:onClick="onCheckboxClicked"/>-->
+        <!--</LinearLayout>-->
+
+        <!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:gravity="center"-->
+            <!--android:layout_marginTop="8dp"-->
+            <!--android:backgroundTint="@color/colorPrimary"-->
+            <!--android:layout_marginBottom="8dp">-->
+            <!--<CheckBox android:id="@+id/checkbox_system_design"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="System Design"-->
+                <!--android:onClick="onCheckboxClicked"/>-->
+            <!--<CheckBox android:id="@+id/checkbox_design"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Design"-->
+                <!--android:onClick="onCheckboxClicked"/>-->
+            <!--<CheckBox android:id="@+id/checkbox_panel"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Panel"-->
+                <!--android:onClick="onCheckboxClicked"/>-->
+        <!--</LinearLayout>-->
+
+        <!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="8dp"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:gravity="center"-->
+            <!--android:backgroundTint="@color/colorPrimary"-->
+            <!--android:layout_marginBottom="8dp">-->
+            <!--<CheckBox android:id="@+id/checkbox_problem_solving"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Problem Solving"-->
+                <!--android:onClick="onCheckboxClicked"/>-->
+            <!--<CheckBox android:id="@+id/checkbox_hr"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="HR"-->
+                <!--android:onClick="onCheckboxClicked"/>-->
+        <!--</LinearLayout>-->
 
         <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
