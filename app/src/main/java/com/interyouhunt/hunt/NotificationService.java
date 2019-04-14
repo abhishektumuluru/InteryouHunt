@@ -1,8 +1,5 @@
 package com.interyouhunt.hunt;
 
-import android.app.Service;
-import android.content.Intent;
-import android.os.IBinder;
 import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -12,9 +9,16 @@ public class NotificationService extends FirebaseMessagingService {
 
     private static final String TAG = "NotificationService";
 
+    @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        Log.d(TAG, "From: " + remoteMessage.getFrom());
-        Log.d(TAG, "Body: " + remoteMessage.getNotification().getBody());
+        super.onMessageReceived(remoteMessage);
+        if (remoteMessage.getNotification() != null) {
+            String title = remoteMessage.getNotification().getTitle();
+            String body = remoteMessage.getNotification().getBody();
+            NotificationHelper.displayNotification(getApplicationContext(), title, body);
+        } else {
+            Log.d(TAG, "Notification not received.");
+        }
     }
 
 
