@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/homenav"
+        android:title="Home"
+        android:icon="@drawable/snaplogo" />
+    <item android:id="@+id/todonav"
+        android:title="To-Do"
+        android:icon="@drawable/pinterestlogo" />
+    <item android:id="@+id/profilenav"
+        android:title="Profile"
+        android:icon="@drawable/pinterestlogo" />
+    <!--<item android:id="@+id/forumnav"-->
+    <!--android:title="Forum"-->
+    <!--android:icon="@drawable/snaplogo" />-->
+</menu>
