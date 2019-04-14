@@ -8,11 +8,13 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -58,6 +60,27 @@ public class ForumActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forum);
         db = FirebaseFirestore.getInstance();
+
+        BottomNavigationView bottomNavigationView = (BottomNavigationView)
+                findViewById(R.id.navigation);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.homenav:
+                                startActivity(new Intent(ForumActivity.this, HomeActivity.class));
+                                break;
+                            case R.id.todonav:
+                                startActivity(new Intent(ForumActivity.this, ToDoActivity.class));
+                                break;
+                            case R.id.forumnav:
+                                startActivity(new Intent(ForumActivity.this, ForumActivity.class));
+                        }
+                        return true;
+                    }
+                });
 
         forumListView = findViewById(R.id.listView);
 
