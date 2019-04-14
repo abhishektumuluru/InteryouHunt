@@ -1,5 +1,6 @@
 package com.interyouhunt.hunt;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -27,6 +28,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -87,7 +90,7 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
                 }
 
                 // Get SwipeMenuListView object from xml
-                swipeListView = (SwipeMenuListView) findViewById(R.id.swipe_list);
+                swipeListView = findViewById(R.id.swipe_list);
 
                 // Define a new Adapter
                 // First parameter - Context
@@ -155,6 +158,27 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
             }
         });
 
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+                        Log.d(TAG, "Token: " + token);
+                        sendRegistrationToServer(token);
+
+                        // Log and toast
+//                        String msg = getString(R.string.msg_token_fmt, token);
+//                        Log.d(TAG, msg);
+//                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
         Button home = findViewById(R.id.toHome);
         home.setOnClickListener(new View.OnClickListener() {
 
@@ -181,6 +205,10 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
                 startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
             }
         });
+    }
+
+    private void sendRegistrationToServer(String token) {
+
     }
 
     private void removePosition(final int position) {
@@ -234,4 +262,5 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
     @Override
     public void onBackPressed() {
     }
+
 }
