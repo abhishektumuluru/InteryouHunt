@@ -63,6 +63,7 @@ public class intActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private static ViewPager mViewPager;
+    private static TextView emptyMessage;
 
     static HashMap<String, Object> map;
     static int numPages;
@@ -96,6 +97,12 @@ public class intActivity extends AppCompatActivity {
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+        emptyMessage = findViewById(R.id.empty_message);
+        if (numPages == 0) {
+            System.out.println("INSIDE SETTING VISIBILITY TO VISIBLE FOR EMPTY MESSAGE");
+            emptyMessage.setVisibility(View.VISIBLE);
+            mViewPager.setVisibility(View.GONE);
+        }
         mSectionsPagerAdapter.notifyDataSetChanged();
         if (user != null) {
             uid = user.getUid();
@@ -277,6 +284,7 @@ public class intActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(Void aVoid) {
                     stages.remove(stageNum);
+                    numPages = stages.size();
                     mSectionsPagerAdapter.deletePage(stageNum);
                     Log.d(TAG, "DocumentSnapshot successfully written!");
                     Toast.makeText(activity, "Removed stage", Toast.LENGTH_LONG).show();
@@ -325,6 +333,13 @@ public class intActivity extends AppCompatActivity {
         @Override
         public int getItemPosition(Object object) {
             // refresh all fragments when data set changed
+            if (numPages == 0) {
+                mViewPager.setVisibility(View.GONE);
+                emptyMessage.setVisibility(View.VISIBLE);
+            } else {
+                mViewPager.setVisibility(View.VISIBLE);
+                emptyMessage.setVisibility(View.GONE);
+            }
             return PagerAdapter.POSITION_NONE;
         }
 
