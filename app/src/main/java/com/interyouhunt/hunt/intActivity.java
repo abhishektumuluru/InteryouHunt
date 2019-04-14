@@ -99,7 +99,6 @@ public class intActivity extends AppCompatActivity {
         mViewPager.setAdapter(mSectionsPagerAdapter);
         emptyMessage = findViewById(R.id.empty_message);
         if (numPages == 0) {
-            System.out.println("INSIDE SETTING VISIBILITY TO VISIBLE FOR EMPTY MESSAGE");
             emptyMessage.setVisibility(View.VISIBLE);
             mViewPager.setVisibility(View.GONE);
         }
