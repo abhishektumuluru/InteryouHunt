@@ -73,6 +73,7 @@ public class ToDoActivity extends AppCompatActivity {
                                 break;
                             case R.id.forumnav:
                                 startActivity(new Intent(ToDoActivity.this, ForumActivity.class));
+                                break;
                         }
                         return true;
                     }

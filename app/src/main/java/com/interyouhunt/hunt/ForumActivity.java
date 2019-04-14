@@ -77,6 +77,7 @@ public class ForumActivity extends AppCompatActivity {
                                 break;
                             case R.id.forumnav:
                                 startActivity(new Intent(ForumActivity.this, ForumActivity.class));
+                                break;
                         }
                         return true;
                     }

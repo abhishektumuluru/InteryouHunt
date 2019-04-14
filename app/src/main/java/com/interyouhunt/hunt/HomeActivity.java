@@ -75,6 +75,7 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
                                 break;
                             case R.id.forumnav:
                                 startActivity(new Intent(HomeActivity.this, ForumActivity.class));
+                                break;
                         }
                         return true;
                     }
