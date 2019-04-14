@@ -1,9 +1,11 @@
 package com.interyouhunt.hunt;
 
-import android.content.Context;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -158,6 +160,14 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
             }
         });
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel notifChannel = new NotificationChannel("Hunt", "Hunt",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            notifChannel.setDescription("Hunt");
+            NotificationManager notifMgr = getSystemService(NotificationManager.class);
+            notifMgr.createNotificationChannel(notifChannel);
+        }
+
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                     @Override
@@ -171,11 +181,6 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
                         String token = task.getResult().getToken();
                         Log.d(TAG, "Token: " + token);
                         sendRegistrationToServer(token);
-
-                        // Log and toast
-//                        String msg = getString(R.string.msg_token_fmt, token);
-//                        Log.d(TAG, msg);
-//                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -208,7 +213,11 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
     }
 
     private void sendRegistrationToServer(String token) {
-
+        HashMap<String, String> fmcToken = new HashMap<>();
+        fmcToken.put("FMCToken", token);
+        DocumentReference doc = db.collection("users")
+                .document(uid);
+        doc.set(fmcToken);
     }
 
     private void removePosition(final int position) {
