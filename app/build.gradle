@@ -40,6 +40,9 @@ dependencies {
         exclude module: 'support-v4'
     }
 
+    // Number picker
+    implementation 'com.github.travijuu:numberpicker:1.0.7'
+
 }
 
 
