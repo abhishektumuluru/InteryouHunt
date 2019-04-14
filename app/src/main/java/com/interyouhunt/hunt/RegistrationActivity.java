@@ -1,5 +1,6 @@
 package com.interyouhunt.hunt;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,12 +9,17 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,6 +44,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private EditText email;
     private EditText password;
     private EditText name;
+    private TextView loginLink;
     private Button createAccountButton;
     FirebaseFirestore db;
     private ProgressDialog mProgressDialog;
@@ -51,6 +58,48 @@ public class RegistrationActivity extends AppCompatActivity {
         email = findViewById(R.id.signup_email_edittext);
         name = findViewById(R.id.signup_name_edittext);
         password = findViewById(R.id.signup_password_edittext);
+        loginLink = findViewById(R.id.link_login);
+
+        name.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
+
+        email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
+
+        password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
+
+        loginLink.setMovementMethod(LinkMovementMethod.getInstance());
+        Spannable spans = (Spannable) loginLink.getText();
+        ClickableSpan clickSpan = new ClickableSpan() {
+
+            @Override
+            public void onClick(View widget)
+            {
+                Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finishAffinity();
+            }
+        };
+        spans.setSpan(clickSpan, 18, spans.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         db = FirebaseFirestore.getInstance();
 
@@ -134,4 +183,8 @@ public class RegistrationActivity extends AppCompatActivity {
                 });
     }
 
+    public void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
 }
