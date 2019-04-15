@@ -174,6 +174,7 @@ public class AddStageActivity extends AppCompatActivity {
                 }
                 mProgressDialog.show();
                 writeToFirestore(stageInfo);
+                //createNotification();
             }
         });
 
@@ -359,4 +360,9 @@ public class AddStageActivity extends AppCompatActivity {
         InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
+
+//    private void createNotification() {
+//        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+//        String token = db.collection("users").document(uid).get("FMCToken");
+//    }
 }
