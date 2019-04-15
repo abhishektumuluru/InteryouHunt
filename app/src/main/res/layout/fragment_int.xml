@@ -15,6 +15,7 @@
         android:paddingTop="12dp"
         android:gravity="center"
         android:paddingLeft="24dp"
+        android:padding="10dp"
         android:paddingRight="24dp">
 
         <TextView
@@ -28,11 +29,12 @@
 
     </LinearLayout>
 
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="24dp"
+        android:paddingTop="0dp"
         android:paddingLeft="24dp"
         android:paddingRight="24dp">
 
@@ -50,7 +52,7 @@
             android:layout_width="214dp"
             android:layout_height="wrap_content"
             android:textSize="18dp"
-            android:text="interview's round type" />
+            android:text="" />
 
     </LinearLayout>
 
@@ -153,26 +155,16 @@
             android:textSize="18dp"
             android:text="these are the notes" />
     </LinearLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_gravity="center"
         android:gravity="center"
-        android:paddingLeft="24dp"
-        android:paddingTop="24dp"
+        android:paddingLeft="5dp"
+        android:paddingTop="10dp"
         android:paddingRight="24dp">
 
-        <!--<Button-->
-            <!--android:id="@+id/edit_stage"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content" />-->
-
-        <!--<Button-->
-            <!--android:id="@+id/delete_stage"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content" />-->
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_edit_stage"
@@ -180,7 +172,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="0dp"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="5dp"
+            android:gravity="center"
+            android:textColor="#ffffffff"
+            android:backgroundTint="#2196f3"
             android:padding="12dp"
             android:text="Edit"
             tools:enabled="false" />
@@ -195,11 +190,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="0dp"
-            android:layout_marginBottom="24dp"
+            android:gravity="center"
+            android:backgroundTint="#F22F17"
+            android:textColor="#ffffffff"
             android:padding="12dp"
+            android:layout_marginBottom="5dp"
             android:text="Delete"
             tools:enabled="false" />
 
     </LinearLayout>
+
+
 
 </LinearLayout>

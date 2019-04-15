@@ -209,7 +209,7 @@ public class intActivity extends AppCompatActivity {
             String time = "";
             if (ts != null) {
                 Date date = ts.toDate();
-                DateFormat displayFormat = new SimpleDateFormat("E MMMM d, yyyy", Locale.ENGLISH);
+                DateFormat displayFormat = new SimpleDateFormat("EEEE MMMM d, yyyy", Locale.ENGLISH);
                 dateString = displayFormat.format(date);
                 SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a", Locale.ENGLISH);
                 time = timeFormat.format(date);

@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:text="Interview Type"
-        android:textColor="#000"
+        android:textColor="#4C4C4C"
         android:textSize="14sp"
         android:textStyle="italic" />
 

@@ -2,6 +2,8 @@ package com.interyouhunt.hunt;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -126,13 +129,19 @@ public class ToDoActivity extends AppCompatActivity {
                         sbType.setLength(sbType.length() - 1);
                     }
                     String datetime = "N/A";
+                    String time = "";
                     Timestamp ts =  (Timestamp) interview.get("datetime");
                     if (ts != null) {
-                        datetime = ts.toDate().toString();
+                        Date date = ts.toDate();
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE MMMM d, yyyy", Locale.ENGLISH);
+                        datetime = dateFormat.format(date);
+                        SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a", Locale.ENGLISH);
+                        time = timeFormat.format(date);
+
                     }
                     Log.d(TAG, "onCallback: datetime " + datetime);
                     String companyName = (String) interview.get("companyName");
-                    ToDo str = new ToDo(companyName, sbType.toString(), datetime, "");
+                    ToDo str = new ToDo(companyName, sbType.toString(), datetime, time);
                     interviews.add(str);
                 }
 
@@ -216,8 +225,12 @@ public class ToDoActivity extends AppCompatActivity {
 
             TextView companyNameText = customView.findViewById(R.id.company_name);
             TextView interviewTypesText = customView.findViewById(R.id.interview_type);
+            interviewTypesText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
             TextView dateText = customView.findViewById(R.id.date);
+            dateText.setPaintFlags(dateText.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
             TextView timeText = customView.findViewById(R.id.time);
+            timeText.setTypeface(timeText.getTypeface(), Typeface.ITALIC);
 
             companyNameText.setText(getItem(position).companyName);
             interviewTypesText.setText(getItem(position).interviewType);
