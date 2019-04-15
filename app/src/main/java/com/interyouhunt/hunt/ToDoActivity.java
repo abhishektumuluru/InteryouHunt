@@ -51,8 +51,8 @@ import java.util.Map;
 public class ToDoActivity extends AppCompatActivity {
 
     private static final String TAG = "ToDoActivity";
-    LinearLayout linearLayout;
-    //ListView listView;
+    //LinearLayout linearLayout;
+    ListView listView;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth mAuth;
     String uid;
@@ -116,7 +116,7 @@ public class ToDoActivity extends AppCompatActivity {
         getSortedInterviews(uid, new HomeActivity.GetInterviewsCallback() {
             @Override
             public void onCallback(List<Map<String, Object>> data) {
-                List<String> interviews = new ArrayList<>();
+                ArrayList<ToDo> interviews = new ArrayList<>();
                 for (Map<String, Object> interview: data) {
                     StringBuilder sbType = new StringBuilder();
                     for (String type: (List<String>) interview.get("type")) {
@@ -131,22 +131,14 @@ public class ToDoActivity extends AppCompatActivity {
                         datetime = ts.toDate().toString();
                     }
                     Log.d(TAG, "onCallback: datetime " + datetime);
-                    String str = interview.get("companyName") + ", " + sbType.toString() + "; Time = " + datetime;
+                    String companyName = (String) interview.get("companyName");
+                    ToDo str = new ToDo(companyName, sbType.toString(), datetime, "");
                     interviews.add(str);
                 }
-                String[] values = interviews.toArray(new String[interviews.size()]);
-                String[] companyNameList = {"Deloitte", "PwC", "E&Y", "KPMG"};
-                String[] interviewTypeList = {"N/A", "N/A", "N/A", "N/A"};
-                String[] dateList = {"s", "s", "s", "s"};
-                String[] timeList = {"f", "f", "f", "f"};
 
                 // Defined Array values to show in ListView
 
-                // Get ListView object from xml
-                //listView = (ListView) findViewById(R.id.list);
-                // Get ListView object from xml
-                //listView = (ListView) findViewById(R.id.list);
-                linearLayout = findViewById(R.id.list);
+                listView = findViewById(R.id.list);
 
                 // Define a new Adapter
                 // First parameter - Context
@@ -154,19 +146,10 @@ public class ToDoActivity extends AppCompatActivity {
                 // Third parameter - ID of the TextView to which the data is written
                 // Forth - the Array of data
 
-                //ArrayAdapter<String> adapter = new ArrayAdapter<String>(ToDoActivity.this,
-                //        android.R.layout.simple_list_item_1, android.R.id.text1, values);
+                ToDoAdapter adapter = new ToDoAdapter(ToDoActivity.this, interviews);
 
-
-                ToDoAdapter adapter = new ToDoAdapter(ToDoActivity.this, companyNameList,
-                        interviewTypeList, dateList, timeList);
-
-                for (int i = 0; i < adapter.getCount(); i++) {
-                    View item = adapter.getView(i, null, null);
-                    linearLayout.addView(item);
-                }
                 // Assign adapter to ListView
-                //listView.setAdapter(adapter);
+                listView.setAdapter(adapter);
             }
         });
 
@@ -206,36 +189,40 @@ public class ToDoActivity extends AppCompatActivity {
         });
     }
 
-    class ToDoAdapter extends ArrayAdapter<String> {
+    class ToDo {
+        private String companyName;
+        private String interviewType;
+        private String date;
+        private String time;
 
-        private String[] companyNames;
-        private String[] interviewTypes;
-        private String[] dates;
-        private String[] times;
+        ToDo(String companyName, String interviewType, String date, String time) {
+            this.companyName = companyName;
+            this.interviewType = interviewType;
+            this.date = date;
+            this.time = time;
+        }
+    }
 
-        ToDoAdapter(Context context, String[] companyNames, String[] interviewTypes,
-                    String[] dates, String[] times) {
-            super(context, R.layout.activity_to_do, companyNames);
-            this.companyNames = companyNames;
-            this.interviewTypes = interviewTypes;
-            this.dates = dates;
-            this.times = times;
+    class ToDoAdapter extends ArrayAdapter<ToDo> {
+
+        ToDoAdapter(Context context, List<ToDo> todoList) {
+            super(context, R.layout.todo_row, todoList);
         }
 
         @Override
-        public View getView(int index, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, ViewGroup parent) {
             LayoutInflater inflater = LayoutInflater.from(getContext());
-            View customView = inflater.inflate(R.layout.activity_to_do, parent, false);
+            View customView = inflater.inflate(R.layout.todo_row, parent, false);
 
-            TextView companyNameText = customView.findViewById(R.id.companyName);
-            TextView interviewTypesText = customView.findViewById(R.id.interviewType);
+            TextView companyNameText = customView.findViewById(R.id.company_name);
+            TextView interviewTypesText = customView.findViewById(R.id.interview_type);
             TextView dateText = customView.findViewById(R.id.date);
             TextView timeText = customView.findViewById(R.id.time);
 
-            companyNameText.setText(companyNames[index]);
-            interviewTypesText.setText(interviewTypes[index]);
-            dateText.setText(dates[index]);
-            timeText.setText(times[index]);
+            companyNameText.setText(getItem(position).companyName);
+            interviewTypesText.setText(getItem(position).interviewType);
+            dateText.setText(getItem(position).date);
+            timeText.setText(getItem(position).time);
 
             return customView;
         }
