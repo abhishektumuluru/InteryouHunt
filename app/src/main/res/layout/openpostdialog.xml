@@ -169,7 +169,7 @@
     <Spinner
         android:id="@+id/interview_type_spinner"
         android:layout_below="@+id/open_dialog_description_textInputLayout"
-        android:layout_width="wrap_content"m
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@android:drawable/btn_dropdown"
         android:spinnerMode="dropdown"
