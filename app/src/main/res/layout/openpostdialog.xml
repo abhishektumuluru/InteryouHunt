@@ -189,9 +189,11 @@
         android:layout_below="@+id/interview_type_spinner"
         android:text="Post"
         android:layout_marginTop="10dp"
+        android:textColor="#ffffffff"
+        android:backgroundTint="#2196f3"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
-        android:textColor="#ff000000" />
+        />
 
     <Button
         android:layout_width="wrap_content"
@@ -200,10 +202,12 @@
         android:gravity="center_horizontal"
         android:layout_below="@+id/post_btn_dialog"
         android:text="Cancel"
+        android:backgroundTint="#F22F17"
+        android:textColor="#ffffffff"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
         android:layout_marginBottom="10dp"
-        android:textColor="#ff000000" />
+        />
 
 </RelativeLayout>
