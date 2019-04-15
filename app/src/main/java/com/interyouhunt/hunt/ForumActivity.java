@@ -350,6 +350,16 @@ public class ForumActivity extends AppCompatActivity {
 
 
             Button postButton = dialog.findViewById(R.id.post_btn_dialog);
+            Button cancelButton = dialog.findViewById(R.id.cancel_btn_dialog);
+
+            cancelButton.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    dialog.dismiss();
+                                                }
+            }
+            );
+
             postButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
