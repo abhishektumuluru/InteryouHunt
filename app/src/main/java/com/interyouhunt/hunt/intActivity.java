@@ -39,9 +39,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class intActivity extends AppCompatActivity {
@@ -201,11 +205,18 @@ public class intActivity extends AppCompatActivity {
             TextView tv4 = rootView.findViewById(R.id.interviewType);
             TextView tv5 = rootView.findViewById(R.id.notesText);
             Timestamp ts = (Timestamp) (stage.get("datetime"));
-            String datetime = "N/A";
+            String dateString = "N/A";
+            String time = "";
             if (ts != null) {
-                datetime = ts.toDate().toString();
+                Date date = ts.toDate();
+                DateFormat displayFormat = new SimpleDateFormat("E MMMM d, yyyy", Locale.ENGLISH);
+                dateString = displayFormat.format(date);
+                SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a", Locale.ENGLISH);
+                time = timeFormat.format(date);
+
             }
-            tv1.setText(datetime);
+
+            tv1.setText(dateString + "\n" + time);
             tv2.setText((String)(stage.get("location")));
             tv3.setText((String)(stage.get("stage")));
             StringBuilder sbType = new StringBuilder();
