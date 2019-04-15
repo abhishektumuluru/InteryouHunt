@@ -65,6 +65,7 @@ public class intActivity extends AppCompatActivity {
      */
     private static ViewPager mViewPager;
     private static TextView emptyMessage;
+    private static TabLayout tabLayout;
 
     static HashMap<String, Object> map;
     static int numPages;
@@ -97,17 +98,19 @@ public class intActivity extends AppCompatActivity {
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         emptyMessage = findViewById(R.id.empty_message);
         if (numPages == 0) {
             emptyMessage.setVisibility(View.VISIBLE);
             mViewPager.setVisibility(View.GONE);
+            tabLayout.setVisibility(View.GONE);
         }
         mSectionsPagerAdapter.notifyDataSetChanged();
         if (user != null) {
             uid = user.getUid();
         }
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+
 //        for(int i = 0; i < tabLayout.getTabCount(); i++) {
 //            tabLayout.getTabAt(i).setText("Stage " + (i + 1));
 //        }
@@ -340,9 +343,11 @@ public class intActivity extends AppCompatActivity {
             if (numPages == 0) {
                 mViewPager.setVisibility(View.GONE);
                 emptyMessage.setVisibility(View.VISIBLE);
+                tabLayout.setVisibility(View.GONE);
             } else {
                 mViewPager.setVisibility(View.VISIBLE);
                 emptyMessage.setVisibility(View.GONE);
+                tabLayout.setVisibility(View.VISIBLE);
             }
             return PagerAdapter.POSITION_NONE;
         }
@@ -359,7 +364,10 @@ public class intActivity extends AppCompatActivity {
         @Override
         public CharSequence getPageTitle(int position) {
             // Generate title based on item position
-            return "Stage  " + String.valueOf(position + 1);
+            List<Map<String, Object>> stages = (List<Map<String, Object>>) map.get("stages");
+            Map<String, Object> stage = stages.get(position);
+            Long stageNum = (Long) stage.get("stageNum");
+            return "Stage  " + String.valueOf(stageNum);
         }
     }
 
