@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.app.AppCompatActivity;
@@ -106,6 +107,11 @@ public class intActivity extends AppCompatActivity {
         if (user != null) {
             uid = user.getUid();
         }
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+//        for(int i = 0; i < tabLayout.getTabCount(); i++) {
+//            tabLayout.getTabAt(i).setText("Stage " + (i + 1));
+//        }
+        tabLayout.setupWithViewPager(mViewPager);
     }
 
     @Override
@@ -348,6 +354,12 @@ public class intActivity extends AppCompatActivity {
             pageIndexes.remove(position);
             // Notify the adapter that the data set is changed
             notifyDataSetChanged();
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            // Generate title based on item position
+            return "Stage  " + String.valueOf(position + 1);
         }
     }
 

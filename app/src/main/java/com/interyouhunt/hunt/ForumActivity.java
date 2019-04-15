@@ -36,8 +36,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -60,9 +58,17 @@ public class ForumActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forum);
         db = FirebaseFirestore.getInstance();
+        Bundle bundle = this.getIntent().getExtras();
 
-        BottomNavigationView bottomNavigationView = (BottomNavigationView)
+        final BottomNavigationView bottomNavigationView = (BottomNavigationView)
                 findViewById(R.id.navigation);
+
+
+        if(bundle != null){
+            int nav_id = bundle.getInt("nav_id");
+            bottomNavigationView.setSelectedItemId(nav_id);
+        }
+
 
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -70,13 +76,28 @@ public class ForumActivity extends AppCompatActivity {
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.homenav:
-                                startActivity(new Intent(ForumActivity.this, HomeActivity.class));
+                                int value1= R.id.homenav;
+                                Intent i1 = new Intent(ForumActivity.this, HomeActivity.class);
+                                Bundle b1 = new Bundle();
+                                b1.putInt("nav_id", value1);
+                                i1.putExtras(b1);
+                                startActivity(i1);
                                 break;
                             case R.id.todonav:
-                                startActivity(new Intent(ForumActivity.this, ToDoActivity.class));
+                                int value2= R.id.todonav;
+                                Intent i2 = new Intent(ForumActivity.this, ToDoActivity.class);
+                                Bundle b2 = new Bundle();
+                                b2.putInt("nav_id", value2);
+                                i2.putExtras(b2);
+                                startActivity(i2);
                                 break;
                             case R.id.forumnav:
-                                startActivity(new Intent(ForumActivity.this, ForumActivity.class));
+                                int value3= R.id.forumnav;
+                                Intent i3 = new Intent(ForumActivity.this, ForumActivity.class);
+                                Bundle b3 = new Bundle();
+                                b3.putInt("nav_id", value3);
+                                i3.putExtras(b3);
+                                startActivity(i3);
                                 break;
                         }
                         return true;
@@ -131,7 +152,6 @@ public class ForumActivity extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         // Start a new activity or open up a new fragment with the post in it
-                        Toast.makeText(ForumActivity.this, "Opening", Toast.LENGTH_SHORT).show();
                         openPost(titles[position], descriptions[position], companies[position], positions[position], interviewTypes[position]);
                     }
                 });
@@ -330,6 +350,16 @@ public class ForumActivity extends AppCompatActivity {
 
 
             Button postButton = dialog.findViewById(R.id.post_btn_dialog);
+            Button cancelButton = dialog.findViewById(R.id.cancel_btn_dialog);
+
+            cancelButton.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    dialog.dismiss();
+                                                }
+            }
+            );
+
             postButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

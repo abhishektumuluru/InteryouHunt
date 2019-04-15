@@ -1,5 +1,6 @@
 package com.interyouhunt.hunt;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,12 +12,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -45,7 +51,8 @@ import java.util.Map;
 public class ToDoActivity extends AppCompatActivity {
 
     private static final String TAG = "ToDoActivity";
-    ListView listView;
+    LinearLayout linearLayout;
+    //ListView listView;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth mAuth;
     String uid;
@@ -56,8 +63,16 @@ public class ToDoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_to_do);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        Bundle bundle = this.getIntent().getExtras();
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.navigation);
+        final BottomNavigationView bottomNavigationView = (BottomNavigationView)
+                findViewById(R.id.navigation);
+
+
+        if(bundle != null){
+            int nav_id = bundle.getInt("nav_id");
+            bottomNavigationView.setSelectedItemId(nav_id);
+        }
 
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -65,13 +80,28 @@ public class ToDoActivity extends AppCompatActivity {
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.homenav:
-                                startActivity(new Intent(ToDoActivity.this, HomeActivity.class));
+                                int value1= R.id.homenav;
+                                Intent i1 = new Intent(ToDoActivity.this, HomeActivity.class);
+                                Bundle b1 = new Bundle();
+                                b1.putInt("nav_id", value1);
+                                i1.putExtras(b1);
+                                startActivity(i1);
                                 break;
                             case R.id.todonav:
-                                startActivity(new Intent(ToDoActivity.this, ToDoActivity.class));
+                                int value2= R.id.todonav;
+                                Intent i2 = new Intent(ToDoActivity.this, ToDoActivity.class);
+                                Bundle b2 = new Bundle();
+                                b2.putInt("nav_id", value2);
+                                i2.putExtras(b2);
+                                startActivity(i2);
                                 break;
                             case R.id.forumnav:
-                                startActivity(new Intent(ToDoActivity.this, ForumActivity.class));
+                                int value3= R.id.forumnav;
+                                Intent i3 = new Intent(ToDoActivity.this, ForumActivity.class);
+                                Bundle b3 = new Bundle();
+                                b3.putInt("nav_id", value3);
+                                i3.putExtras(b3);
+                                startActivity(i3);
                                 break;
                         }
                         return true;
@@ -105,13 +135,18 @@ public class ToDoActivity extends AppCompatActivity {
                     interviews.add(str);
                 }
                 String[] values = interviews.toArray(new String[interviews.size()]);
+                String[] companyNameList = {"Deloitte", "PwC", "E&Y", "KPMG"};
+                String[] interviewTypeList = {"N/A", "N/A", "N/A", "N/A"};
+                String[] dateList = {"s", "s", "s", "s"};
+                String[] timeList = {"f", "f", "f", "f"};
 
                 // Defined Array values to show in ListView
 
                 // Get ListView object from xml
-                listView = (ListView) findViewById(R.id.list);
+                //listView = (ListView) findViewById(R.id.list);
                 // Get ListView object from xml
-                listView = (ListView) findViewById(R.id.list);
+                //listView = (ListView) findViewById(R.id.list);
+                linearLayout = findViewById(R.id.list);
 
                 // Define a new Adapter
                 // First parameter - Context
@@ -119,12 +154,19 @@ public class ToDoActivity extends AppCompatActivity {
                 // Third parameter - ID of the TextView to which the data is written
                 // Forth - the Array of data
 
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(ToDoActivity.this,
-                        android.R.layout.simple_list_item_1, android.R.id.text1, values);
+                //ArrayAdapter<String> adapter = new ArrayAdapter<String>(ToDoActivity.this,
+                //        android.R.layout.simple_list_item_1, android.R.id.text1, values);
 
 
+                ToDoAdapter adapter = new ToDoAdapter(ToDoActivity.this, companyNameList,
+                        interviewTypeList, dateList, timeList);
+
+                for (int i = 0; i < adapter.getCount(); i++) {
+                    View item = adapter.getView(i, null, null);
+                    linearLayout.addView(item);
+                }
                 // Assign adapter to ListView
-                listView.setAdapter(adapter);
+                //listView.setAdapter(adapter);
             }
         });
 
@@ -162,5 +204,41 @@ public class ToDoActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    class ToDoAdapter extends ArrayAdapter<String> {
+
+        private String[] companyNames;
+        private String[] interviewTypes;
+        private String[] dates;
+        private String[] times;
+
+        ToDoAdapter(Context context, String[] companyNames, String[] interviewTypes,
+                    String[] dates, String[] times) {
+            super(context, R.layout.activity_to_do, companyNames);
+            this.companyNames = companyNames;
+            this.interviewTypes = interviewTypes;
+            this.dates = dates;
+            this.times = times;
+        }
+
+        @Override
+        public View getView(int index, View convertView, ViewGroup parent) {
+            LayoutInflater inflater = LayoutInflater.from(getContext());
+            View customView = inflater.inflate(R.layout.activity_to_do, parent, false);
+
+            TextView companyNameText = customView.findViewById(R.id.companyName);
+            TextView interviewTypesText = customView.findViewById(R.id.interviewType);
+            TextView dateText = customView.findViewById(R.id.date);
+            TextView timeText = customView.findViewById(R.id.time);
+
+            companyNameText.setText(companyNames[index]);
+            interviewTypesText.setText(interviewTypes[index]);
+            dateText.setText(dates[index]);
+            timeText.setText(times[index]);
+
+            return customView;
+        }
+
     }
 }

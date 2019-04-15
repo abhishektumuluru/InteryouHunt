@@ -22,6 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:textStyle="bold|italic"
             android:textSize="32dp"
             android:text="Company's Name" />
 
@@ -39,6 +40,8 @@
             android:id="@+id/date"
             android:layout_width="89dp"
             android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:textStyle="bold|italic"
             android:text="Date:" />
 
         <TextView
@@ -46,6 +49,7 @@
             android:paddingLeft="14dp"
             android:layout_width="214dp"
             android:layout_height="wrap_content"
+            android:textSize="18dp"
             android:text="interview's round type" />
 
     </LinearLayout>
@@ -61,13 +65,16 @@
         <TextView
             android:id="@+id/location"
             android:layout_width="89dp"
+            android:textStyle="bold|italic"
             android:layout_height="wrap_content"
+            android:textSize="18dp"
             android:text="Location:" />
 
         <TextView
             android:id="@+id/userLocation"
             android:paddingLeft="14dp"
             android:layout_width="214dp"
+            android:textSize="18dp"
             android:layout_height="wrap_content" />
 
     </LinearLayout>
@@ -82,13 +89,16 @@
 
         <TextView
             android:id="@+id/round"
-            android:layout_width="89dp"
             android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:layout_width="wrap_content"
+            android:textStyle="bold|italic"
             android:text="Round Type:" />
 
         <TextView
             android:id="@+id/roundType"
             android:paddingLeft="14dp"
+            android:textSize="18dp"
             android:layout_width="214dp"
             android:layout_height="wrap_content"/>
 
@@ -107,11 +117,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingRight="10dp"
+            android:textSize="18dp"
+            android:textStyle="bold|italic"
             android:text="Interview Type:" />
 
         <TextView
             android:id="@+id/interviewType"
             android:paddingLeft="14dp"
+            android:textSize="18dp"
             android:layout_width="214dp"
             android:layout_height="wrap_content"/>
 
@@ -128,6 +141,8 @@
         <TextView
             android:id="@+id/notes"
             android:layout_width="104dp"
+            android:textSize="18dp"
+            android:textStyle="bold|italic"
             android:layout_height="21dp"
             android:text="Notes:" />
 
@@ -135,6 +150,7 @@
             android:id="@+id/notesText"
             android:layout_width="210dp"
             android:layout_height="115dp"
+            android:textSize="18dp"
             android:text="these are the notes" />
     </LinearLayout>
 

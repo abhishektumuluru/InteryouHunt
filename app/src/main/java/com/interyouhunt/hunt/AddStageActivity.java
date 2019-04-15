@@ -3,6 +3,7 @@ package com.interyouhunt.hunt;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,12 +11,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -30,14 +36,17 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 public class AddStageActivity extends AppCompatActivity {
 
@@ -50,6 +59,7 @@ public class AddStageActivity extends AppCompatActivity {
     private EditText dateEditText;
     private Calendar myCalendar;
     private TimePicker timePicker;
+    CheckableSpinnerAdapter spinnerAdapter;
 
     private ProgressDialog mProgressDialog;
 
@@ -61,12 +71,8 @@ public class AddStageActivity extends AppCompatActivity {
     private EditText location;
     private EditText stage;
     private NumberPicker stageNumberPicker;
-    private CheckBox behavioralCheckBox;
-    private CheckBox techicalCheckBox;
-    private CheckBox caseStudyCheckBox;
-    private boolean isBehavioral;
-    private boolean isTechnical;
-    private boolean isCaseStudy;
+    private final List<CheckableSpinnerAdapter.SpinnerItem<String>> spinnerItems = new ArrayList<>();
+    private final Set<String> selectedItems = new HashSet<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,12 +92,27 @@ public class AddStageActivity extends AppCompatActivity {
 
         notes = findViewById(R.id.input_notes);
         location = findViewById(R.id.input_location);
-        behavioralCheckBox = findViewById(R.id.checkbox_behavioral);
-        techicalCheckBox = findViewById(R.id.checkbox_technical);
-        caseStudyCheckBox = findViewById(R.id.checkbox_case_study);
-        isBehavioral = false;
-        isTechnical = false;
-        isCaseStudy = false;
+
+        // fill the 'spinner_items' array with all items to show
+        List<String> stageTypes = Arrays.asList(
+                "Behavioral",
+                "Technical",
+                "Case Study",
+                "System Design",
+                "Design",
+                "Panel",
+                "Problem Solving",
+                "HR"
+        );
+        for(String stageType : stageTypes) {
+            CheckableSpinnerAdapter.SpinnerItem<String> spinnerItem = new CheckableSpinnerAdapter.SpinnerItem<>(stageType, stageType);
+            spinnerItems.add(spinnerItem);
+        }
+
+        String headerText = "Stage Types";
+        Spinner spinner = findViewById(R.id.my_spinner);
+        spinnerAdapter = new CheckableSpinnerAdapter<>(this, headerText, spinnerItems, selectedItems);
+        spinner.setAdapter(spinnerAdapter);
 
         timePicker = findViewById(R.id.input_time_picker);
         dateEditText = findViewById(R.id.input_date);
@@ -203,22 +224,8 @@ public class AddStageActivity extends AppCompatActivity {
         String notesData = (String) stageMap.get("notes");
         String stageData = (String) stageMap.get("stage");
         Long stageNumData = (Long) stageMap.get("stageNum");
-        for (String type: typesData) {
-            switch (type) {
-                case "Behavioral":
-                    behavioralCheckBox.setChecked(true);
-                    isBehavioral = true;
-                    break;
-                case "Technical":
-                    techicalCheckBox.setChecked(true);
-                    isTechnical = true;
-                    break;
-                case "Case Study":
-                    caseStudyCheckBox.setChecked(true);
-                    isCaseStudy = true;
-                    break;
-            }
-        }
+        selectedItems.addAll(typesData);
+        spinnerAdapter.notifyDataSetChanged();
         Date date = tsData.toDate();
         myCalendar.setTime(date);
         timePicker.setCurrentHour(myCalendar.get(Calendar.HOUR_OF_DAY));
@@ -231,16 +238,7 @@ public class AddStageActivity extends AppCompatActivity {
 
     private Map<String, Object> loadFields() {
         List<String> types = new ArrayList<>();
-
-        if (isBehavioral) {
-            types.add("Behavioral");
-        }
-        if (isTechnical) {
-            types.add("Technical");
-        }
-        if (isCaseStudy) {
-            types.add("Case Study");
-        }
+        types.addAll(selectedItems);
         datetime = new Timestamp(new Date(myCalendar.getTimeInMillis()));
         Long stageNum = Long.valueOf(stageNumberPicker.getValue());
         // end info to store
@@ -312,44 +310,6 @@ public class AddStageActivity extends AppCompatActivity {
 
     }
 
-    public void onCheckboxClicked(View view) {
-        // Is the view now checked?
-        boolean checked = ((CheckBox) view).isChecked();
-        System.out.println("BEFORE");
-        System.out.println("isBehavioral: " + isBehavioral);
-        System.out.println("isTechnical: " + isTechnical);
-        System.out.println("isCaseStudy: " + isCaseStudy);
-
-        // Check which checkbox was clicked
-        switch(view.getId()) {
-            case R.id.checkbox_behavioral:
-                if (checked) {
-                    isBehavioral = true;
-                } else {
-                    isBehavioral = false;
-                }
-                break;
-            case R.id.checkbox_technical:
-                if (checked) {
-                    isTechnical = true;
-                } else {
-                    isTechnical = false;
-                }
-                break;
-            case R.id.checkbox_case_study:
-                if (checked) {
-                    isCaseStudy = true;
-                } else {
-                    isCaseStudy = false;
-                }
-                break;
-        }
-        System.out.println("AFTER");
-        System.out.println("isBehavioral: " + isBehavioral);
-        System.out.println("isTechnical: " + isTechnical);
-        System.out.println("isCaseStudy: " + isCaseStudy);
-    }
-
     private void updateLabel() {
         String myFormat = "MM/dd/yy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
@@ -365,4 +325,114 @@ public class AddStageActivity extends AppCompatActivity {
 //        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 //        String token = db.collection("users").document(uid).get("FMCToken");
 //    }
+}
+
+class CheckableSpinnerAdapter<T> extends BaseAdapter {
+
+    static class SpinnerItem<T> {
+        private String text;
+        private T item;
+
+        SpinnerItem(T t, String s) {
+            item = t;
+            text = s;
+        }
+    }
+
+    private Context context;
+    private Set<T> selected_items;
+    private List<SpinnerItem<T>> all_items;
+    private String headerText;
+
+    CheckableSpinnerAdapter(Context context,
+                            String headerText,
+                            List<SpinnerItem<T>> all_items,
+                            Set<T> selected_items) {
+        this.context = context;
+        this.headerText = headerText;
+        this.all_items = all_items;
+        this.selected_items = selected_items;
+    }
+
+    @Override
+    public int getCount() {
+        return all_items.size() + 1;
+    }
+
+    @Override
+    public Object getItem(int position) {
+        if( position < 1 ) {
+            return null;
+        }
+        else {
+            return all_items.get(position-1);
+        }
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return 0;
+    }
+
+    @Override
+    @SuppressWarnings({"unchecked"})
+    @NonNull
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+
+        final ViewHolder holder;
+        if (convertView == null ) {
+            LayoutInflater layoutInflator = LayoutInflater.from(context);
+            convertView = layoutInflator.inflate(R.layout.checkable_spinner_item, parent, false);
+
+            holder = new ViewHolder();
+            holder.mTextView = convertView.findViewById(R.id.text);
+            holder.mCheckBox = convertView.findViewById(R.id.checkbox);
+            convertView.setTag(holder);
+        }
+        else {
+            holder = (ViewHolder) convertView.getTag();
+        }
+
+        if( position < 1 ) {
+            holder.mCheckBox.setVisibility(View.GONE);
+            holder.mTextView.setText(headerText);
+        }
+        else {
+            final int listPos = position - 1;
+            holder.mCheckBox.setVisibility(View.VISIBLE);
+            holder.mTextView.setText(all_items.get(listPos).text);
+
+            final T item = all_items.get(listPos).item;
+            boolean isSel = selected_items.contains(item);
+
+            holder.mCheckBox.setOnCheckedChangeListener(null);
+            holder.mCheckBox.setChecked(isSel);
+
+            holder.mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if( isChecked ) {
+                        selected_items.add(item);
+                    }
+                    else {
+                        selected_items.remove(item);
+                    }
+                }
+            });
+
+            holder.mTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    holder.mCheckBox.toggle();
+                }
+            });
+        }
+
+        return convertView;
+    }
+
+    private class ViewHolder {
+        private TextView mTextView;
+        private CheckBox mCheckBox;
+    }
 }
