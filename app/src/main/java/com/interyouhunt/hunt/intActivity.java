@@ -65,6 +65,7 @@ public class intActivity extends AppCompatActivity {
      */
     private static ViewPager mViewPager;
     private static TextView emptyMessage;
+    private static TabLayout tabLayout;
 
     static HashMap<String, Object> map;
     static int numPages;
@@ -78,7 +79,7 @@ public class intActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_int);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
 
@@ -96,21 +97,19 @@ public class intActivity extends AppCompatActivity {
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager = findViewById(R.id.container);
+        tabLayout = findViewById(R.id.tabs);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         emptyMessage = findViewById(R.id.empty_message);
         if (numPages == 0) {
             emptyMessage.setVisibility(View.VISIBLE);
             mViewPager.setVisibility(View.GONE);
+            tabLayout.setVisibility(View.GONE);
         }
         mSectionsPagerAdapter.notifyDataSetChanged();
         if (user != null) {
             uid = user.getUid();
         }
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-//        for(int i = 0; i < tabLayout.getTabCount(); i++) {
-//            tabLayout.getTabAt(i).setText("Stage " + (i + 1));
-//        }
         tabLayout.setupWithViewPager(mViewPager);
     }
 
@@ -161,7 +160,6 @@ public class intActivity extends AppCompatActivity {
          * fragment.
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
-        private static final String ARG_STAGE_NUMBER = "stage_number";
 
         public Activity activity;
 
@@ -193,16 +191,16 @@ public class intActivity extends AppCompatActivity {
             List<Map<String, Object>> stages = (List<Map<String, Object>>) map.get("stages");
             Map<String, Object> stage = stages.get(ind);
             View rootView = inflater.inflate(R.layout.fragment_int, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.company);
+            TextView textView = rootView.findViewById(R.id.company);
             String company = (String) map.get("companyName");
             Long stageNum = (Long) stage.get("stageNum");
             textView.setText(company + " Stage " + stageNum);
-            TextView tv1 = (TextView) rootView.findViewById(R.id.dateTime);
-            TextView tv2 = (TextView) rootView.findViewById(R.id.userLocation);
-            TextView tv3 = (TextView) rootView.findViewById(R.id.roundType);
-            TextView tv4 = (TextView) rootView.findViewById(R.id.interviewType);
-            TextView tv5 = (TextView) rootView.findViewById(R.id.notesText);
-            Timestamp ts =  (Timestamp)(stage.get("datetime"));
+            TextView tv1 = rootView.findViewById(R.id.dateTime);
+            TextView tv2 = rootView.findViewById(R.id.userLocation);
+            TextView tv3 = rootView.findViewById(R.id.roundType);
+            TextView tv4 = rootView.findViewById(R.id.interviewType);
+            TextView tv5 = rootView.findViewById(R.id.notesText);
+            Timestamp ts = (Timestamp) (stage.get("datetime"));
             String datetime = "N/A";
             if (ts != null) {
                 datetime = ts.toDate().toString();
@@ -340,9 +338,11 @@ public class intActivity extends AppCompatActivity {
             if (numPages == 0) {
                 mViewPager.setVisibility(View.GONE);
                 emptyMessage.setVisibility(View.VISIBLE);
+                tabLayout.setVisibility(View.GONE);
             } else {
                 mViewPager.setVisibility(View.VISIBLE);
                 emptyMessage.setVisibility(View.GONE);
+                tabLayout.setVisibility(View.VISIBLE);
             }
             return PagerAdapter.POSITION_NONE;
         }
@@ -359,7 +359,10 @@ public class intActivity extends AppCompatActivity {
         @Override
         public CharSequence getPageTitle(int position) {
             // Generate title based on item position
-            return "Stage  " + String.valueOf(position + 1);
+            List<Map<String, Object>> stages = (List<Map<String, Object>>) map.get("stages");
+            Map<String, Object> stage = stages.get(position);
+            Long stageNum = (Long) stage.get("stageNum");
+            return "Stage  " + String.valueOf(stageNum);
         }
     }
 
