@@ -4,6 +4,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -12,11 +13,14 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
@@ -121,10 +125,11 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
             public void onCallback(final List<Map<String, Object>> data) {
                 interviewListData = data;
                 // Get Array values to show in ListView
+                final List<String> positions = new ArrayList<>();
                 interviews = new ArrayList<>();
                 for (Map<String, Object> interview: data) {
-                    String str = interview.get("companyName") + ", " + interview.get("position");
-                    interviews.add(str);
+                    interviews.add((String) interview.get("companyName"));
+                    positions.add((String) interview.get("position"));
                 }
 
                 // Get SwipeMenuListView object from xml
@@ -137,7 +142,24 @@ public class HomeActivity extends AppCompatActivity implements Serializable {
                 // Forth - the Array of data
 
                 adapter = new ArrayAdapter<String>(HomeActivity.this,
-                        android.R.layout.simple_list_item_1, android.R.id.text1, interviews);
+                        android.R.layout.simple_list_item_2, android.R.id.text1, interviews) {
+                    @Override
+                    public View getView(int position, View convertView, ViewGroup parent) {
+                        View view = super.getView(position, convertView, parent);
+                        TextView text1 = view.findViewById(android.R.id.text1);
+                        TextView text2 = view.findViewById(android.R.id.text2);
+
+                        text1.setText(interviews.get(position));
+                        text1.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
+                        text2.setText(positions.get(position));
+                        text1.setTypeface(text1.getTypeface(), Typeface.BOLD_ITALIC);
+                        text1.setPadding(0,0,0,10);
+
+                        text2.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
+                        text2.setTypeface(text2.getTypeface(), Typeface.ITALIC);
+                        return view;
+                    }
+                };
 
                 // Assign adapter to SwipeMenuListView
                 swipeListView.setAdapter(adapter);
